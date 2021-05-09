@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 using System;
 namespace CustomMath
 {
@@ -10,7 +12,7 @@ namespace CustomMath
         public float z;
 
         public float sqrMagnitude { get { return (x * x) + (y * y) + (z * z); } }
-        public Vector3 normalized { get { return new Vec3 (( x/magnitude), (y/magnitude),(z/magnitude )); } }
+        public Vec3 normalized { get { return new Vec3 (( x/magnitude), (y/magnitude),(z/magnitude )); } }
         public float magnitude { get { return Mathf.Sqrt((x * x) + (y * y) + (z * z)); } }
         #endregion
 
@@ -138,7 +140,7 @@ namespace CustomMath
         {
             if(Magnitude(vector)>maxLength)
             {
-               return new Vec3(vector.normalized.x * maxLength, vector.normalized.y * maxLength,vector.z *maxLength );
+               return new Vec3(vector.normalized.x * maxLength, vector.normalized.y * maxLength,vector.normalized.z *maxLength );
             }
             return vector;
         }
@@ -214,7 +216,7 @@ namespace CustomMath
         }
         public static float SqrMagnitude(Vec3 vector)
         {
-            float mag = (vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
+            float mag = ((vector.x * vector.x) + (vector.y * vector.y) + (vector.z * vector.z));
             return mag;
         }
         public static Vec3 Project(Vec3 vector, Vec3 onNormal) 
@@ -240,7 +242,7 @@ namespace CustomMath
         public void Normalize()
         {
             Vec3 vec = new Vec3(x, y, z);
-            float mag= Magnitude(vec);
+            float mag = Magnitude(vec);
             if(mag> 1)
             {
 

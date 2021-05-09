@@ -9,22 +9,23 @@ public class test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vec3 a = new Vec3(2, 4, 6);
-        Vec3 b = new Vec3(7, 6, 5);
+        Vector3 c = new Vector3(2, 4, 6);
+        Vector3 d = new Vector3(7, 6, 5);
 
-        Vector3 c = (Vector3)a;
-        Vector3 d = (Vector3)b;
+        Vec3 a = new Vec3(c);
+        Vec3 b = new Vec3(d);
 
         #region FUNCIONA_ANGLE
-       // Debug.Log("Vec3.Angle: " + Vec3.Angle(a, b));
-       // Debug.Log("Vector3.Angle: " + Vector3.Angle(c, d));
-       // Debug.Log("-----------------------------------------");
+        // Debug.Log("Vec3.Angle: " + Vec3.Angle(a, b));
+        // Debug.Log("Vector3.Angle: " + Vector3.Angle(c, d));
+        // Debug.Log("-----------------------------------------");
         #endregion
-        //Revisar
-        Debug.Log("Vec3.ClampMagnitude: " + Vec3.ClampMagnitude(a, maxLenght)); //resultado 1.3 ; 2,6 ; 30 
-        Debug.Log("Vector3.ClampMagnitude: " + Vector3.ClampMagnitude(c, maxLenght));// resultado 1.3 ;2.7 ; 4.0
-        Debug.Log("-----------------------------------------");
 
+        #region FUNCIONA_CLAMP_MAGNITUDE
+        //Debug.Log("Vec3.ClampMagnitude: " + Vec3.ClampMagnitude(a, maxLenght)); 
+        //Debug.Log("Vector3.ClampMagnitude: " + Vector3.ClampMagnitude(c, maxLenght));
+        //Debug.Log("-----------------------------------------");
+        #endregion
         #region FUNCIONA_MAGNITUDE
         //Debug.Log("Vec3.Magnitude: " + Vec3.Magnitude(a));
         //Debug.Log("Vector3.Magnitude: " + Vector3.Magnitude(c));
@@ -70,9 +71,8 @@ public class test : MonoBehaviour
         //Debug.Log("-----------------------------------------");
         #endregion
 
-        //REVISAR
-        Debug.Log("Vec3.SqrMagnitude: " + Vec3.SqrMagnitude(a));//RESULTADO 56
-        Debug.Log("Vector3.SqrMagnitude: " + Vector3.SqrMagnitude(d));//RESULTADO 110
+        Debug.Log("Vec3.SqrMagnitude: " + Vec3.SqrMagnitude(a));
+        Debug.Log("Vector3.SqrMagnitude: " + Vector3.SqrMagnitude(c));
         Debug.Log("-----------------------------------------");
 
         #region FUNCIONA_PROJECT
