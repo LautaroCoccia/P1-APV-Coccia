@@ -71,7 +71,12 @@ namespace CustomMath
             else
                 return false;
         }
-        
+        public void SetNormalAndPosition(Vec3 inNormal, Vec3 inPoint)
+        {
+            normal = inNormal.normalized;
+            distance = Vec3.Dot(inNormal, inPoint);
+        }
+
     }
 
 }
