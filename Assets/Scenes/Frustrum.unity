@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 4561331}
   - component: {fileID: 4561330}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Punto2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 269484712}
   - component: {fileID: 269484711}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Punto6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,6 +440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 362552434}
   - component: {fileID: 362552435}
+  - component: {fileID: 362552436}
   m_Layer: 0
   m_Name: frustrum
   m_TagString: Untagged
@@ -460,11 +461,11 @@ Transform:
   m_Children:
   - {fileID: 728983424}
   - {fileID: 4561329}
-  - {fileID: 966275047}
-  - {fileID: 495494410}
-  - {fileID: 1123965858}
-  - {fileID: 269484710}
   - {fileID: 1756345748}
+  - {fileID: 495494410}
+  - {fileID: 966275047}
+  - {fileID: 269484710}
+  - {fileID: 1123965858}
   - {fileID: 1688893444}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -476,9 +477,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362552433}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46283076d30ae6942900ce4212852b80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pivot: {fileID: 362552434}
+  sphere: {fileID: 156809504}
+--- !u!114 &362552436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362552433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2f2dfe5c171ae4b8e4a32c6e450c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   pivot: {fileID: 362552434}
@@ -496,7 +511,7 @@ GameObject:
   - component: {fileID: 495494412}
   - component: {fileID: 495494411}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Punto4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -589,7 +604,7 @@ GameObject:
   - component: {fileID: 728983426}
   - component: {fileID: 728983425}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Punto1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -858,7 +873,7 @@ GameObject:
   - component: {fileID: 966275049}
   - component: {fileID: 966275048}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Punto5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -876,7 +891,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362552434}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &966275048
 BoxCollider:
@@ -951,7 +966,7 @@ GameObject:
   - component: {fileID: 1123965860}
   - component: {fileID: 1123965859}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Punto7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -969,7 +984,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362552434}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1123965859
 BoxCollider:
@@ -1322,7 +1337,7 @@ GameObject:
   - component: {fileID: 1688893446}
   - component: {fileID: 1688893445}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Punto8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1508,7 +1523,7 @@ GameObject:
   - component: {fileID: 1756345750}
   - component: {fileID: 1756345749}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Punto3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1526,7 +1541,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 362552434}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1756345749
 BoxCollider:
