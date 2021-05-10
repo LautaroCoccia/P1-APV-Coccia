@@ -22,6 +22,7 @@ public class FrustrumMyPlane : MonoBehaviour
 
     GameObject[] cubes;
     Vec3 pivPos;
+    Vec3 pivRot;
     Vec3[] points;
 
     Vec3 punto1 = new Vec3(5, 0, 0.3f);
@@ -56,7 +57,7 @@ public class FrustrumMyPlane : MonoBehaviour
         points[7] = punto8;
 
         pivPos = new Vec3(pivot.position.x, pivot.position.y, pivot.position.z);
-
+        pivRot = new Vec3(pivot.rotation.x, pivot.rotation.y, pivot.rotation.z);
         near = new MyPlane(punto1, punto2, punto4);
         far = new MyPlane(punto3, punto6, punto8);
         left = new MyPlane(punto1, punto2, punto8);
@@ -86,16 +87,14 @@ public class FrustrumMyPlane : MonoBehaviour
             top.GetSide(new Vec3(cubes[i].transform.position)) && down.GetSide(new Vec3(cubes[i].transform.position)))
             {
                 cubes[i].GetComponent<MeshRenderer>().enabled = true;
-                Debug.Log("esta dentro");
+                Debug.Log(cubes[i].name +" esta dentro");
             }
             else
             {
                 cubes[i].GetComponent<MeshRenderer>().enabled = false;
-                Debug.Log("esta fuera ");
+                Debug.Log(cubes[i].name + " esta fuera ");
             }
         }
-        
-
     }
     // FALTA REFACTORIZAR MAS!!!!!!!!!!
     private void UpdatePlanesPos()
@@ -151,6 +150,15 @@ public class FrustrumMyPlane : MonoBehaviour
                 }
                 pivPos.z = pivot.transform.position.z;
             }
+            //if( pivRot.y>pivot.transform.rotation.y)
+            //{
+            //    for (int i = 0; i < points.Length; i++)
+            //    {
+            //        points[i].x += (pivot.transform.position.x - pivPos.x*pivRot.x);
+            //        points[i].z += (pivot.transform.position.z - pivPos.z*pivRot.z);
+            //    }
+            //    pivRot.y = pivot.transform.rotation.y;
+            //}
         }
         #endregion
 
