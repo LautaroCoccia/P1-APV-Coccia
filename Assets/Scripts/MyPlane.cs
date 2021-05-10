@@ -11,16 +11,19 @@ namespace CustomMath
         {
             normal = inNormal.normalized;
             distance = Vec3.Dot(inNormal, inPoint);
+            ShowDebug();
         }
         public MyPlane(Vec3 inNormal, float d)
         {
             normal = inNormal.normalized;
             distance = d;
+            ShowDebug();
         }
         public MyPlane(Vec3 a, Vec3 b, Vec3 c)
         {
             normal = Vec3.Cross(b - a, c - a).normalized;
             distance = Vec3.Dot(normal, a);
+            ShowDebug();
         }
         public void Set3Points(Vec3 a, Vec3 b, Vec3 c)
         {
@@ -28,6 +31,7 @@ namespace CustomMath
             Vec3 vec2 = c - a;
             normal = Vec3.Cross(vec1, vec2).normalized;
             distance = Vec3.Dot(normal, a);
+            ShowDebug();
         }
 
         public MyPlane flipped
@@ -37,25 +41,24 @@ namespace CustomMath
                 return new MyPlane(-normal, -normal * distance);
             }
         }
-        public void Translate( Vec3 translation) 
-        {
-            Vec3 res = ((normal * distance) + translation);
-            distance = Vec3.Dot(normal, res);
-        }
         public Vec3 ClosestPointOnPlane(Vec3 point)
         {
             Vec3 aux = (point -normal) * GetDistanceToPoint(point);
+            ShowDebug();
             return aux;
         }
         public void Flip()
         {
             normal = normal * -1;
             distance = distance * -1;
+            ShowDebug();
         }
         public float GetDistanceToPoint(Vec3 point)
         {
             float aux = -Vec3.Dot(normal, point)+ distance;
+            ShowDebug();
             return aux;
+
         }
         public bool GetSide(Vec3 point)
         {
@@ -75,8 +78,14 @@ namespace CustomMath
         {
             normal = inNormal.normalized;
             distance = Vec3.Dot(inNormal, inPoint);
+            ShowDebug();
         }
 
-    }
+        void ShowDebug()
+        {
+            Debug.Log("normal: " + normal);
+            Debug.Log("Distance: " + distance);
 
+        }
+    }
 }
