@@ -64,11 +64,7 @@ public class FrustrumMyPlane : MonoBehaviour
         top = new MyPlane(punto3, punto2, punto6);
         down = new MyPlane(punto1, punto4, punto7);
 
-        far.Flip();
-        down.Flip();
-        left.Flip();
-        right.Flip();
-        top.Flip();
+        near.Flip();
         down.Flip();
     }
     private void Update()
@@ -164,12 +160,9 @@ public class FrustrumMyPlane : MonoBehaviour
         right = new MyPlane(points[5], points[4], points[3]);
         top = new MyPlane(points[2], points[1], points[5]);
         down = new MyPlane(points[0], points[3], points[6]);
-        far.Flip();
-            down.Flip();
-            left.Flip();
-            right.Flip();
-            down.Flip();
-            top.Flip();
+        
+        near.Flip();
+        down.Flip();
     }
 }
 
