@@ -51,7 +51,6 @@ namespace CustomMath
         {
             float aux = Vec3.Dot(normal, point)+ distance;
             return aux;
-
         }
         public bool GetSide(Vec3 point)
         {

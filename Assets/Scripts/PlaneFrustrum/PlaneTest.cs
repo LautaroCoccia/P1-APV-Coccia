@@ -22,7 +22,7 @@ public class PlaneTest : MonoBehaviour
         Debug.Log("normal : " + b.normal);
         Debug.Log("GETDISTANCE" + Z.ClosestPointOnPlane(C));
         Debug.Log("getDistance" + b.ClosestPointOnPlane(A));
-        //Debug.Log("GETDISTANCE" + Z.GetDistanceToPoint(C));
-        //Debug.Log("getDistance" + b.GetDistanceToPoint(A));
+        Debug.Log("angle" + Vector3.Angle(A,B));
+        Debug.Log("ANGLE" + Vec3.Angle(A, B));
     }
 }

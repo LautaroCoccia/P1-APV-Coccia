@@ -6,7 +6,7 @@ public class FrustrumMyPlane : MonoBehaviour
 {
     [SerializeField] Transform pivot;
     [SerializeField] GameObject cube0;
-    [SerializeField] GameObject cube1;
+    [SerializeField] GameObject cube1; 
     [SerializeField] GameObject cube2;
     [SerializeField] GameObject cube3;
     [SerializeField] GameObject cube4;
