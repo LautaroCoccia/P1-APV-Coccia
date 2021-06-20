@@ -4,17 +4,23 @@ using UnityEngine;
 using CustomMath;
 public class test : MonoBehaviour
 {
+    [SerializeField] Vector3 xyz;
     public float t = 0.5f;
     public float maxLenght = 5;
     // Start is called before the first frame update
     void Start()
     {
         Vector3 c = new Vector3(2, 4, 6);
-        Vector3 d = new Vector3(7, 6, 5);
+        Vector3 d = new Vector3(7, 6, 5 * 2);
 
         Vec3 a = new Vec3(c);
         Vec3 b = new Vec3(d);
 
+        Quaternion _c = new Quaternion(c.x,c.y,c.z,1);
+        Quaternion _d = new Quaternion(d.x,d.y,d.z,1);
+        Quater _c_ = new Quater(_c.x,_c.y,_c.z,1);
+        Quater _d_ = new Quater(d.x,d.y,d.z,1);
+        #region VEC3
         #region FUNCIONA_ANGLE
         // Debug.Log("Vec3.Angle: " + Vec3.Angle(a, b));
         // Debug.Log("Vector3.Angle: " + Vector3.Angle(c, d));
@@ -26,6 +32,7 @@ public class test : MonoBehaviour
         //Debug.Log("Vector3.ClampMagnitude: " + Vector3.ClampMagnitude(c, maxLenght));
         //Debug.Log("-----------------------------------------");
         #endregion
+
         #region FUNCIONA_MAGNITUDE
         //Debug.Log("Vec3.Magnitude: " + Vec3.Magnitude(a));
         //Debug.Log("Vector3.Magnitude: " + Vector3.Magnitude(c));
@@ -50,14 +57,17 @@ public class test : MonoBehaviour
         //Debug.Log("-----------------------------------------");
         #endregion
 
-        //APARENTA FUNCIONAR
-        Debug.Log("Vec3.Lerp: " + Vec3.Lerp(a, b, t));
-        Debug.Log("Vector3.Lerp: " + Vector3.Lerp(c, d, t));
-        Debug.Log("-----------------------------------------");
-        //APARENTA FUNCIONAR
-        Debug.Log("Vec3.LerpUnclamped: " + Vec3.LerpUnclamped(a, b, t));
-        Debug.Log("Vector3.LerpUnclamped: " + Vector3.LerpUnclamped(c, d, t));
-        Debug.Log("-----------------------------------------");
+        #region FUNCIONA_LERP
+        //Debug.Log("Vec3.Lerp: " + Vec3.Lerp(a, b, t));
+        //Debug.Log("Vector3.Lerp: " + Vector3.Lerp(c, d, t));
+        //Debug.Log("-----------------------------------------");
+        #endregion
+
+        #region FUNCIONA_LERPUNCLAMP
+        //Debug.Log("Vec3.LerpUnclamped: " + Vec3.LerpUnclamped(a, b, t));
+        //Debug.Log("Vector3.LerpUnclamped: " + Vector3.LerpUnclamped(c, d, t));
+        //Debug.Log("-----------------------------------------");
+        #endregion
 
         #region FUNCIONA_MAX
         //Debug.Log("Vec3.Max: " + Vec3.Max(a, b)); //RESULTADO X=9 Y= 10 Z = 11
@@ -71,9 +81,11 @@ public class test : MonoBehaviour
         //Debug.Log("-----------------------------------------");
         #endregion
 
-        Debug.Log("Vec3.SqrMagnitude: " + Vec3.SqrMagnitude(a));
-        Debug.Log("Vector3.SqrMagnitude: " + Vector3.SqrMagnitude(c));
-        Debug.Log("-----------------------------------------");
+        #region FUNCIONA_SQRMAGNITUDE
+        //Debug.Log("Vec3.SqrMagnitude: " + Vec3.SqrMagnitude(a));
+        //Debug.Log("Vector3.SqrMagnitude: " + Vector3.SqrMagnitude(c));
+        //Debug.Log("-----------------------------------------");
+        #endregion
 
         #region FUNCIONA_PROJECT
         //Debug.Log("Vec3.Project: " + Vec3.Project(a, b));
@@ -101,5 +113,25 @@ public class test : MonoBehaviour
         //c.Normalize();
         //Debug.Log("Vector3.Normalize: " + c);
         #endregion
+        #endregion
+
+        #region QUATER
+        #region FUNCIONA_DOT
+        //Debug.Log("QUATERNION DOT");
+        //Debug.Log( Quaternion.Dot(_c, _d));
+        //Debug.Log("Quater DOT");
+        //Debug.Log( Quater.Dot(_c_, _d_));
+        #endregion
+
+        //Debug.Log("QUATERNION EULER " + Quaternion.Euler(d));
+        //Debug.Log("QUATER EULER " + Quater.Euler(d));
+        #endregion
+        Quater q = _c_ * _d_;
+        Quaternion _q = _c * _d;
+        //Debug.Log("Multiplicacion de Quater " + q.ToString());
+        //Debug.Log("Multiplicacion de Quaternion " + _q.ToString());
+        Debug.Log("Euler de Quater float " + Quater.Euler(xyz.x, xyz.y, xyz.z));
+        Debug.Log("Euler de Quater vector3 " + Quater.Euler(xyz));
+        Debug.Log("Euler de Quaterion " + Quaternion.Euler(xyz.x, xyz.y, xyz.z));
     }
 }
