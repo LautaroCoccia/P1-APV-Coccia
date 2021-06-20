@@ -325,7 +325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e4fe393279ccb419d19e906e5c4263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xyz: {x: 0, y: 0, z: 0}
+  xyz: {x: 30, y: 10, z: 50}
   t: 0.5
   maxLenght: 5
 --- !u!4 &848651810
