@@ -33,6 +33,20 @@ namespace CustomMath
         public static Quater AngleAxis(float angle, Vector3 axis)
         {
             throw new NotImplementedException();
+            //float S = Mathf.Sin(angle);
+            //float C = Mathf.Cos(angle);
+            //float T = 1 - C;
+            //
+            //float magnitude = Mathf.Sqrt(axis.x * axis.x + /axis.y/ * axis.y + axis.z * axis.z);
+            //Quater q;
+            //axis.x = axis.x / magnitude;
+            //axis.y = axis.y / magnitude;
+            //axis.z = axis.z / magnitude;
+            //
+            //if(axis.x* axis.y*T * axis.z*S> 0.998)
+            //{
+            //
+            //}
         }
         public static float Dot(Quater a, Quater b)
         {
@@ -40,28 +54,53 @@ namespace CustomMath
         }
         public static Quater Euler(Vector3 euler)
         {
-            float cy = Mathf.Cos(euler.x * 0.5f);
-            float sy = Mathf.Sin(euler.x * 0.5f);
-            float cp = Mathf.Cos(euler.y * 0.5f);
-            float sp = Mathf.Sin(euler.y * 0.5f);
-            float cr = Mathf.Cos(euler.z * 0.5f);
-            float sr = Mathf.Sin(euler.z * 0.5f);
-
+            float C1 = Mathf.Cos(euler.x);
+            float S1 = Mathf.Sin(euler.x);
+            float C2 = Mathf.Cos(euler.y);
+            float S2 = Mathf.Sin(euler.y);
+            float C3 = Mathf.Cos(euler.z);
+            float S3 = Mathf.Sin(euler.z);
             Quater q;
-            q._w = cr * cp * cy + sr * sp * sy;
-            q._x = sr * cp * cy - cr * sp * sy;
-            q._y = cr * sp * cy + sr * cp * sy;
-            q._z = cr * cp * sy - sr * sp * cy;
+            q._w = Mathf.Sqrt(1 + C1 * C2 + C1 * C3 - S1 * S2 * S3 + C2 * C3) / 2;
+            float w4 = (4 * q._w);
+            q._x = (S1 * C2 + S1 * C3 + C1 * S2 * S3) / w4;
+            q._y = (-S1 * S3 + C1 * S2 * C3 + S2) / w4;
+            q._z = (C2 * S3 + C1 * S3 + S1 * S2 * C3) / w4;
 
+            //float cy = Mathf.Cos(euler.x * 0.5f);
+            //float sy = Mathf.Sin(euler.x * 0.5f);
+            //float cp = Mathf.Cos(euler.y * 0.5f);
+            //float sp = Mathf.Sin(euler.y * 0.5f);
+            //float cr = Mathf.Cos(euler.z * 0.5f);
+            //float sr = Mathf.Sin(euler.z * 0.5f);
+            //
+            //Quater q;
+            //q._w = cr * cp * cy + sr * sp * sy;
+            //q._x = sr * cp * cy - cr * sp * sy;
+            //q._y = cr * sp * cy + sr * cp * sy;
+            //q._z = cr * cp * sy - sr * sp * cy;
+            //
             return q;
         }
-        public static Quater Euler(float x, float y,float z)
+        public static Quater Euler(float x, float y, float z)
         {
+            float C1 = Mathf.Cos(x);
+            float S1 = Mathf.Sin(x);
+            float C2 = Mathf.Cos(y);
+            float S2 = Mathf.Sin(y);
+            float C3 = Mathf.Cos(z);
+            float S3 = Mathf.Sin(z);
             Quater q;
-            q._x = Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) -        Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
-            q._y = Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2) +        Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2);
-            q._z = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2) -        Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2);
-            q._w = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) +        Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
+            q._w = Mathf.Sqrt(1 + C1 * C2 + C1 * C3 - S1 * S2 * S3 + C2 * C3) / 2;
+            float w4 = (4 * q._w);
+            q._x = (S1 * C2 + S1 * C3 + C1 * S2 * S3) / w4;  
+            q._y = (-S1 * S3 + C1 * S2 * C3 + S2) / w4;
+            q._z = (C2 * S3 + C1 * S3 + S1 * S2 * C3) / w4; 
+
+            //q._x = Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) - Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
+            //q._y = Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2) + Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2);
+            //q._z = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2) - Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2);
+            //q._w = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) + Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
             return q;
         }
         public static Quater FromToRotation(Vector3 fromDirection,Vector3 toDirection)
@@ -70,7 +109,10 @@ namespace CustomMath
         }
         public static Quater Inverse(Quater rotation)
         {
-            throw new NotImplementedException();
+            rotation._x *= -1;
+            rotation._y *= -1;
+            rotation._z *= -1;
+            return rotation;
         }
         public static Quater Lerp(Quater a, Quater b, float t)
         {
@@ -94,7 +136,14 @@ namespace CustomMath
         }
         public static Quater Normalize(Quater q)
         {
-            throw new NotImplementedException();
+            float answ = (q._x * q._x) + (q._y * q._y) + (q._z * q._z) + (q._w *q._w);
+            if (answ > 1)
+            {
+                q._x = q._x / answ;
+                q._y = q._y / answ;
+                q._z = q._z / answ;
+            }
+            return q;
         }
         public static Quater RotateTowards(Quater from, Quater to, float maxDegreesDelta)
         {
@@ -118,7 +167,13 @@ namespace CustomMath
         }
         public void Normalize()
         {
-
+            float answ = (_x * _x) + (_y * _y) + (_z * _z) + (_w * _w);
+            if (answ > 1)
+            {
+                _x = _x / answ;
+                _y = _y / answ;
+                _z = _z / answ;
+            }
         }
         public void Set(float newX, float newY, float newZ, float newW)
         {

@@ -126,12 +126,14 @@ public class test : MonoBehaviour
         //Debug.Log("QUATERNION EULER " + Quaternion.Euler(d));
         //Debug.Log("QUATER EULER " + Quater.Euler(d));
         #endregion
-        Quater q = _c_ * _d_;
-        Quaternion _q = _c * _d;
+        Quater q = _c_ ;
+        Quaternion _q = _c ;
+        
         //Debug.Log("Multiplicacion de Quater " + q.ToString());
         //Debug.Log("Multiplicacion de Quaternion " + _q.ToString());
         Debug.Log("Euler de Quater float " + Quater.Euler(xyz.x, xyz.y, xyz.z));
         Debug.Log("Euler de Quater vector3 " + Quater.Euler(xyz));
         Debug.Log("Euler de Quaterion " + Quaternion.Euler(xyz.x, xyz.y, xyz.z));
+        Debug.Log("QUATERNION INVERSE" + Quaternion.Inverse(_c));
     }
 }
