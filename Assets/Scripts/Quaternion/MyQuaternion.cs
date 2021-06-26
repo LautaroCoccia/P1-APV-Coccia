@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace CustomMath
 {
-
     public struct Quater
     {
         public const float kEpsilon = 1E-06F;
@@ -149,13 +148,64 @@ namespace CustomMath
         {
             throw new NotImplementedException();
         }
-        public static Quater Sleep(Quater a, Quater b,float t)
+        public static Quater Sleep(Quater a, Quater b, float t)
         {
-            throw new NotImplementedException();
+            Mathf.Clamp(t, 0, 1);
+            Quater q;
+            float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
+            if(Mathf.Abs(cosHalfTheta)>1)
+            {
+                q = a;
+                return q;
+            }
+
+            float halfTheta = Mathf.Acos(cosHalfTheta);
+            float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
+            if(Mathf.Abs(sinHalfTheta) < 0.001f)
+            {
+                q._w = (a._w * 0.5f + b._w * 0.5f);
+                q._x = (a._x * 0.5f + b._x * 0.5f);
+                q._y = (a._y * 0.5f + b._y * 0.5f);
+                q._z = (a._z * 0.5f + b._z * 0.5f);
+                return q;
+            }
+            float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
+            float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+
+            q._w = a._w * ratioA + b._w * ratioB;
+            q._x = a._x * ratioA + b._x * ratioB;
+            q._y = a._y * ratioA + b._y * ratioB;
+            q._z = a._z * ratioA + b._z * ratioB;
+            return q;
         }
         public static Quater SleepUnclamped(Quater a, Quater b, float t)
         {
-            throw new NotImplementedException();
+            Quater q;
+            float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
+            if (Mathf.Abs(cosHalfTheta) > 1)
+            {
+                q = a;
+                return q;
+            }
+
+            float halfTheta = Mathf.Acos(cosHalfTheta);
+            float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
+            if (Mathf.Abs(sinHalfTheta) < 0.001f)
+            {
+                q._w = (a._w * 0.5f + b._w * 0.5f);
+                q._x = (a._x * 0.5f + b._x * 0.5f);
+                q._y = (a._y * 0.5f + b._y * 0.5f);
+                q._z = (a._z * 0.5f + b._z * 0.5f);
+                return q;
+            }
+            float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
+            float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+
+            q._w = a._w * ratioA + b._w * ratioB;
+            q._x = a._x * ratioA + b._x * ratioB;
+            q._y = a._y * ratioA + b._y * ratioB;
+            q._z = a._z * ratioA + b._z * ratioB;
+            return q;
         }
         public bool Equals(Quater other)
         {
@@ -214,20 +264,6 @@ namespace CustomMath
             float x = (lhs._w * rhs._x) + (lhs._x * rhs._w) + (lhs._y * rhs._z) - (lhs._z * rhs._y);
             float y = (lhs._w * rhs._y) - (lhs._x * rhs._z) + (lhs._y * rhs._w) + (lhs._z * rhs._x);
             float z = (lhs._w * rhs._z) + (lhs._x * rhs._y) - (lhs._y * rhs._x) + (lhs._z * rhs._w);
-            //float CX = Mathf.Cos(euler.x * 0.5f);
-            //float SX = Mathf.Sin(euler.x * 0.5f);
-            //
-            //float CY = Mathf.Cos(euler.y * 0.5f);
-            //float SY = Mathf.Sin(euler.y * 0.5f);
-            //
-            //float CZ = Mathf.Cos(euler.z * 0.5f);
-            //float SZ = Mathf.Sin(euler.z * 0.5f);
-            //
-            //q._w = CZ * CY * CX + SZ * SY * SX;
-            //q._x = SZ * CY * CX - CZ * SY * SX;
-            //q._y = CZ * SY * CX + SZ * CY * SX;
-            //q._z = CZ * CY * SX - SZ * SY * CX;
-            //
             Quater q = new Quater(x, y, z, w);
             return q;
         }
