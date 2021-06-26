@@ -211,11 +211,12 @@ namespace CustomMath
         }
         public bool Equals(Quater other)
         {
-            throw new NotImplementedException();
+            return _x == other._x && _y == other._y && _z == other._z && _w == other._w;
         }
         public override bool Equals(object other)
         {
-            throw new NotImplementedException();
+            if (!(other is Quater)) return false;
+            return Equals((Quater)other);
         }
         public void Normalize()
         {
@@ -253,7 +254,6 @@ namespace CustomMath
         
         public override string ToString()
         {
-            
             return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
         }
         //public static Vector3 operator *(Quater rotation, Vector3 point)
