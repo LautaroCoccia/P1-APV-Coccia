@@ -31,7 +31,9 @@ namespace CustomMath
         }
         public static Quater AngleAxis(float angle, Vector3 axis)
         {
-            throw new NotImplementedException();
+            Quater q =  new Quater(axis.x * Mathf.Sin(angle / 2) , axis.y * Mathf.Sin(angle / 2) ,
+                axis.z * Mathf.Sin(angle / 2) , Mathf.Cos(angle / 2));
+            return q;
             //float S = Mathf.Sin(angle);
             //float C = Mathf.Cos(angle);
             //float T = 1 - C;
