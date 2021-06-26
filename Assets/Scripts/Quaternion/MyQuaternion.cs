@@ -218,6 +218,10 @@ namespace CustomMath
             if (!(other is Quater)) return false;
             return Equals((Quater)other);
         }
+        public override int GetHashCode()
+        {
+            return _x.GetHashCode() ^ (_y.GetHashCode() << 2) ^ (_z.GetHashCode() >> 2) ^ _w.GetHashCode();
+        }
         public void Normalize()
         {
             float answ = (_x * _x) + (_y * _y) + (_z * _z) + (_w * _w);
