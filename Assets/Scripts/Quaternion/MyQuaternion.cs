@@ -113,11 +113,17 @@ namespace CustomMath
         }
         public static Quater Lerp(Quater a, Quater b, float t)
         {
+
             Mathf.Clamp(t, 0, 1);
-            a._w = a._w + (b._w - a._w) * t;
-            a._x = a._x + (b._x - a._x) * t;
-            a._y = a._y + (b._y - a._y) * t;
-            a._z = a._z + (b._z - a._z) * t;
+            //a._w = a._w + (b._w - a._w) * t;
+            //a._x = a._x + (b._x - a._x) * t;
+            //a._y = a._y + (b._y - a._y) * t;
+            //a._z = a._z + (b._z - a._z) * t;
+            a._x = (a._x * 1) - t + b._x * t;
+            a._y = (a._y * 1) - t + b._y * t;
+            a._z = (a._z * 1) - t + b._z * t;
+            a._w = (a._w * 1) - t + b._w * t;
+            a.Normalize();
             return a;
 
         }
@@ -135,18 +141,22 @@ namespace CustomMath
         }
         public static Quater Normalize(Quater q)
         {
-            float answ = (q._x * q._x) + (q._y * q._y) + (q._z * q._z) + (q._w *q._w);
-            if (answ > 1)
-            {
-                q._x = q._x / answ;
-                q._y = q._y / answ;
-                q._z = q._z / answ;
-            }
+            float answ = Mathf.Sqrt((q._x * q._x) + (q._y * q._y) + (q._z * q._z) + (q._w * q._w));
+            q._x = q._x / answ;
+            q._y = q._y / answ;
+            q._z = q._z / answ;
+            q._w = q._w / answ;
             return q;
         }
         public static Quater RotateTowards(Quater from, Quater to, float maxDegreesDelta)
         {
-            throw new NotImplementedException();
+            float angle = Angle(from, to);
+            if(angle == 0)
+            {
+                return to;
+            }
+            float temp = Mathf.Min(maxDegreesDelta / angle);
+            return SlerpUnclamped(from, to, temp);
         }
         public static Quater Slerp(Quater qa, Quater qb, float t)
         {
@@ -251,12 +261,13 @@ namespace CustomMath
         }
         public void Normalize()
         {
-            float answ = (_x * _x) + (_y * _y) + (_z * _z) + (_w * _w);
+            float answ = Mathf.Sqrt((_x * _x) + (_y * _y) + (_z * _z) + (_w * _w));
             if (answ > 1)
             {
                 _x = _x / answ;
                 _y = _y / answ;
                 _z = _z / answ;
+                _w = _w / answ;
             }
         }
         public void Set(float newX, float newY, float newZ, float newW)
@@ -287,7 +298,7 @@ namespace CustomMath
         {
             return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
         }
-       // public static Vector3 operator *(Quater rotation, Vector3 /point)
+       // public static Vector3 operator *(Quater rotation, Vector3 point)
        // {
        //
        // }
