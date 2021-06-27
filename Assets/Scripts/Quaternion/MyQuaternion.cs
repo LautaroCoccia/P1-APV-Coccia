@@ -62,53 +62,37 @@ namespace CustomMath
         }
         public static Quater Euler(Vector3 euler)
         {
-            float C1 = Mathf.Cos(euler.x);
-            float S1 = Mathf.Sin(euler.x);
-            float C2 = Mathf.Cos(euler.y);
-            float S2 = Mathf.Sin(euler.y);
-            float C3 = Mathf.Cos(euler.z);
-            float S3 = Mathf.Sin(euler.z);
             Quater q;
-            q._w = Mathf.Sqrt(1 + C1 * C2 + C1 * C3 - S1 * S2 * S3 + C2 * C3) / 2;
-            float w4 = (4 * q._w);
-            q._x = (S1 * C2 + S1 * C3 + C1 * S2 * S3) / w4;
-            q._y = (-S1 * S3 + C1 * S2 * C3 + S2) / w4;
-            q._z = (C2 * S3 + C1 * S3 + S1 * S2 * C3) / w4;
 
-            //float cy = Mathf.Cos(euler.x * 0.5f);
-            //float sy = Mathf.Sin(euler.x * 0.5f);
-            //float cp = Mathf.Cos(euler.y * 0.5f);
-            //float sp = Mathf.Sin(euler.y * 0.5f);
-            //float cr = Mathf.Cos(euler.z * 0.5f);
-            //float sr = Mathf.Sin(euler.z * 0.5f);
-            //
-            //Quater q;
-            //q._w = cr * cp * cy + sr * sp * sy;
-            //q._x = sr * cp * cy - cr * sp * sy;
-            //q._y = cr * sp * cy + sr * cp * sy;
-            //q._z = cr * cp * sy - sr * sp * cy;
-            //
+            float C1 = Mathf.Cos(Mathf.Deg2Rad * euler.x / 2);
+            float S1 = Mathf.Sin(Mathf.Deg2Rad * euler.x / 2);
+            float C2 = Mathf.Cos(Mathf.Deg2Rad * euler.y / 2);
+            float S2 = Mathf.Sin(Mathf.Deg2Rad * euler.y / 2);
+            float C3 = Mathf.Cos(Mathf.Deg2Rad * euler.z / 2);
+            float S3 = Mathf.Sin(Mathf.Deg2Rad * euler.z / 2);
+
+            Quater X = new Quater(S1, 0, 0, C1);
+            Quater Y = new Quater(0, S2, 0, C2);
+            Quater Z = new Quater(0, 0, S3, C3);
+
+            q = (X * Y * Z);
             return q;
         }
         public static Quater Euler(float x, float y, float z)
         {
-            float C1 = Mathf.Cos(x);
-            float S1 = Mathf.Sin(x);
-            float C2 = Mathf.Cos(y);
-            float S2 = Mathf.Sin(y);
-            float C3 = Mathf.Cos(z);
-            float S3 = Mathf.Sin(z);
             Quater q;
-            q._w = Mathf.Sqrt(1 + C1 * C2 + C1 * C3 - S1 * S2 * S3 + C2 * C3) / 2;
-            float w4 = (4 * q._w);
-            q._x = (S1 * C2 + S1 * C3 + C1 * S2 * S3) / w4;  
-            q._y = (-S1 * S3 + C1 * S2 * C3 + S2) / w4;
-            q._z = (C2 * S3 + C1 * S3 + S1 * S2 * C3) / w4; 
+            float C1 = Mathf.Cos(Mathf.Deg2Rad * x / 2);
+            float S1 = Mathf.Sin(Mathf.Deg2Rad * x / 2);
+            float C2 = Mathf.Cos(Mathf.Deg2Rad * y / 2);
+            float S2 = Mathf.Sin(Mathf.Deg2Rad * y / 2);
+            float C3 = Mathf.Cos(Mathf.Deg2Rad * z / 2);
+            float S3 = Mathf.Sin(Mathf.Deg2Rad * z / 2);
 
-            //q._x = Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) - Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
-            //q._y = Mathf.Cos(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2) + Mathf.Sin(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2);
-            //q._z = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Sin(z / 2) - Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Cos(z / 2);
-            //q._w = Mathf.Cos(x / 2) * Mathf.Cos(y / 2) * Mathf.Cos(z / 2) + Mathf.Sin(x / 2) * Mathf.Sin(y / 2) * Mathf.Sin(z / 2);
+            Quater X = new Quater(S1, 0, 0, C1);
+            Quater Y = new Quater(0, S2, 0, C2);
+            Quater Z = new Quater(0, 0, S3, C3);
+
+            q = (X * Y * Z);
             return q;
         }
         public static Quater FromToRotation(Vector3 fromDirection,Vector3 toDirection)
@@ -298,16 +282,16 @@ namespace CustomMath
         {
             return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
         }
-        //public static Vector3 operator *(Quater rotation, Vector3 point)
-        //{
-        //
-        //}
-        public static Quater operator *(Quater lhs, Quater rhs)
+       // public static Vector3 operator *(Quater rotation, /Vector3 /point)
+       // {
+       //
+       // }
+        public static Quater operator *(Quater a, Quater b)
         {
-            float w = (lhs._w * rhs._w) - (lhs._x * rhs._x) - (lhs._y * rhs._y) - (lhs._z * rhs._z);
-            float x = (lhs._w * rhs._x) + (lhs._x * rhs._w) + (lhs._y * rhs._z) - (lhs._z * rhs._y);
-            float y = (lhs._w * rhs._y) - (lhs._x * rhs._z) + (lhs._y * rhs._w) + (lhs._z * rhs._x);
-            float z = (lhs._w * rhs._z) + (lhs._x * rhs._y) - (lhs._y * rhs._x) + (lhs._z * rhs._w);
+            float w = (a._w * b._w) - (a._x * b._x) - (a._y * b._y) - (a._z * b._z);
+            float x = (a._w * b._x) + (a._x * b._w) + (a._y * b._z) - (a._z * b._y);
+            float y = (a._w * b._y) - (a._x * b._z) + (a._y * b._w) + (a._z * b._x);
+            float z = (a._w * b._z) + (a._x * b._y) - (a._y * b._x) + (a._z * b._w);
             Quater q = new Quater(x, y, z, w);
             return q;
         }
