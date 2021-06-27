@@ -169,6 +169,7 @@ namespace CustomMath
         {
             Mathf.Clamp(t, 0, 1);
             a = a + (b - a) * t;
+            a.Normalize();
             return a;
         }
         public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
