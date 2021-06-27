@@ -423,7 +423,7 @@ MonoBehaviour:
   obj1: {fileID: 848651810}
   obj2: {fileID: 86048852}
   xyz: {x: 2, y: 4, z: 6}
-  t: 1
+  t: 0
   maxLenght: 5
   angle: 46
 --- !u!4 &848651810
@@ -447,13 +447,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848651808}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1731222253, guid: 70b6a6b8b260fe14b85295b9aff53ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ejercicio: 0
-  angle: 0
+  angle: 1
 --- !u!114 &848651812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,5 +466,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6de092abe9e438f181272d648451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xyz: {x: 0, y: 0, z: 0}
-  time: 0
+  ejer: 0
+  ANGLE: 1
