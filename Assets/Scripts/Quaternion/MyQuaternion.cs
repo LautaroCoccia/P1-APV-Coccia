@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Internal;
 
 namespace CustomMath
 {
@@ -43,8 +44,7 @@ namespace CustomMath
         }
         public static Quater AngleAxis(float angle, Vector3 axis)
         {
-            Quater q =  new Quater(axis.x * Mathf.Sin(angle / 2) , axis.y * Mathf.Sin(angle / 2) ,
-                axis.z * Mathf.Sin(angle / 2) , Mathf.Cos(angle / 2));
+            Quater q =  new Quater(axis.x * Mathf.Sin(angle / 2) , axis.y * Mathf.Sin(angle / 2) , axis.z * Mathf.Sin(angle / 2) , Mathf.Cos(angle / 2));
             return q;
             //float S = Mathf.Sin(angle);
             //float C = Mathf.Cos(angle);
@@ -247,7 +247,7 @@ namespace CustomMath
         }
         public override int GetHashCode()
         {
-            return _x.GetHashCode() ^ (_y.GetHashCode() << 2) ^ (_z.GetHashCode() >> 2) ^ _w.GetHashCode();
+            return _x.GetHashCode() ^ (_y.GetHashCode() << 2) ^ (_z.GetHashCode() >> 2) ^ _w.GetHashCode() >> 1;
         }
         public void Normalize()
         {
@@ -266,22 +266,22 @@ namespace CustomMath
             _z = newZ;
             _w = newW;
         }
-        public void SetFromToRotation(Vector3 fromDirection, Vector3 toDirection)
+        public void SetFromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
 
         }
-        public void SetLookRotation(Vector3 view,  Vector3 up)
+        public void SetLookRotation(Vec3 view, [DefaultValue("Vec3.Up") ] Vec3 up)
         {
 
         }
-        public void SetLookRotation(Vector3 view)
+        public void SetLookRotation(Vec3 view)
         {
 
         }
-        //public void ToAngleAxis(out float angle, out Vector3 axis)
-        //{
-        //
-        //}
+        public void ToAngleAxis(out float angle, out Vec3 axis)
+        {
+            throw new NotImplementedException();
+        }
         
         public override string ToString()
         {
