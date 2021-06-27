@@ -243,7 +243,7 @@ namespace CustomMath
         {
             Vec3 vec = new Vec3(x, y, z);
             float mag = Magnitude(vec);
-            if(mag> 1)
+            if (mag > 1)
             {
 
                 vec.x = vec.x / mag;

@@ -306,6 +306,7 @@ GameObject:
   m_Component:
   - component: {fileID: 848651810}
   - component: {fileID: 848651809}
+  - component: {fileID: 848651811}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -325,9 +326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e4fe393279ccb419d19e906e5c4263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xyz: {x: 90, y: 90, z: 90}
-  t: 0.5
+  xyz: {x: 0, y: 0, z: 0}
+  t: 0
   maxLenght: 5
+  angle: 46
 --- !u!4 &848651810
 Transform:
   m_ObjectHideFlags: 0
@@ -342,3 +344,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &848651811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848651808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1731222253, guid: 70b6a6b8b260fe14b85295b9aff53ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ejercicio: 0
+  angle: 0

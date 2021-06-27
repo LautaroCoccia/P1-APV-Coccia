@@ -7,19 +7,26 @@ public class test : MonoBehaviour
     [SerializeField] Vector3 xyz;
     public float t = 0.5f;
     public float maxLenght = 5;
+    [SerializeField] float angle;
     // Start is called before the first frame update
+    Vector3 c = new Vector3(2, 4, 6);
+    Vector3 d = new Vector3(7, 6, 10);
+
+    Vec3 a;
+    Vec3 b;
+
+    Quaternion _c;
+    Quaternion _d;
+    Quater _c_;
+    Quater _d_;
     void Start()
     {
-        Vector3 c = new Vector3(2, 4, 6);
-        Vector3 d = new Vector3(7, 6, 5 * 2);
-
-        Vec3 a = new Vec3(c);
-        Vec3 b = new Vec3(d);
-
-        Quaternion _c = new Quaternion(c.x,c.y,c.z,1);
-        Quaternion _d = new Quaternion(d.x,d.y,d.z,1);
-        Quater _c_ = new Quater(_c.x,_c.y,_c.z,1);
-        Quater _d_ = new Quater(d.x,d.y,d.z,1);
+        a = new Vec3(c);
+        b = new Vec3(d);
+        _c = new Quaternion(xyz.x, xyz.y, xyz.z, 1);
+        _d = new Quaternion(d.x, d.y, d.z, 1);
+        _c_ = new Quater(xyz.x, xyz.y, xyz.z, 1);
+        _d_ = new Quater(d.x, d.y, d.z, 1);
         #region VEC3
         #region FUNCIONA_ANGLE
         // Debug.Log("Vec3.Angle: " + Vec3.Angle(a, b));
@@ -134,6 +141,33 @@ public class test : MonoBehaviour
         Debug.Log("Euler de Quater float " + Quater.Euler(xyz.x, xyz.y, xyz.z));
         Debug.Log("Euler de Quater vector3 " + Quater.Euler(xyz));
         Debug.Log("Euler de Quaterion " + Quaternion.Euler(xyz.x, xyz.y, xyz.z));
+        Debug.Log("---------------------------------");
         Debug.Log("QUATERNION INVERSE" + Quaternion.Inverse(_c));
+        Debug.Log("Quater INVERSE" + Quater.Inverse(_c_));
+        Debug.Log("---------------------------------");
+        Debug.Log(" QUATERNION AngleAxis" + Quaternion.AngleAxis(angle, xyz));
+        Debug.Log(" Quater AngleAxis" + Quater.AngleAxis(angle, xyz));
+        Debug.Log("---------------------------------");
+        Debug.Log("QUATERNION NORMALIZE " + Quaternion.Normalize(_c));
+        Debug.Log(" Quater NORMALIZE " + Quater.Normalize(_c_));
+        Debug.Log("---------------------------------");
+        Debug.Log(" QUATERNION Angle " + Quaternion.Angle(_c, _d));
+        Debug.Log(" Quater Angle " + Quater.Angle(_c_, _d_));
+        Debug.Log("---------------------------------");
+        Debug.Log("QUATERNION LERP " + Quaternion.Lerp(_c, _d, t));
+        Debug.Log("Quater LERP " + Quater.Lerp(_c_, _d_, t));
+    }
+    private void Update()
+    {
+        xyz = xyz;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("---------------------------------");
+            Debug.Log("QUATERNION SLEEP " + Quaternion.Slerp(_c, _d, t));
+            Debug.Log("Quater SLEEP " + Quater.Slerp(_c_, _d_, t));
+        }
+       // Debug.Log("---------------------------------");
+       // Debug.Log("QUAtTERNION SLEEPUNCLAMPED " + Quaternion.SlerpUnclamped(_c, _d, t));
+       // Debug.Log("Quater SLEEPUNCLAMPED " + Quater.SlerpUnclamped(_c_, _d_, t));
     }
 }

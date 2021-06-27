@@ -27,7 +27,14 @@ namespace CustomMath
         //Funciones
         public static float Angle(Quater a, Quater b)
         {
-            throw new NotImplementedException();
+            float dot = Dot(a, b);
+            float magFrom = ((a._x * a._x) + (a._y * a._y) + (a._z * a._z) + (a._w * a._w));
+            float magTo = ((b._x * b._x) + (b._y * b._y) + (b._z * b._z) + (b._w * b._w));
+            float aux = Mathf.Sqrt(magFrom * magTo);
+            float aux2 = dot / aux;
+            float rad = (float)Mathf.Acos(aux2);
+            float acos = Mathf.Rad2Deg * rad;
+            return acos;
         }
         public static Quater AngleAxis(float angle, Vector3 axis)
         {
@@ -117,10 +124,12 @@ namespace CustomMath
         }
         public static Quater Lerp(Quater a, Quater b, float t)
         {
-            //Mathf.Clamp(t, 0, 1);
-            //a = a + (b - a) * t;
-            //return a;
-            throw new NotImplementedException();
+            Mathf.Clamp(t, 0, 1);
+            a._w = a._w + (b._w - a._w) * t;
+            a._x = a._x + (b._x - a._x) * t;
+            a._y = a._y + (b._y - a._y) * t;
+            a._z = a._z + (b._z - a._z) * t;
+            return a;
 
         }
         public static Quater LerpUnclamped(Quater a, Quater b, float t)
@@ -150,44 +159,74 @@ namespace CustomMath
         {
             throw new NotImplementedException();
         }
-        public static Quater Sleep(Quater a, Quater b, float t)
+        public static Quater Slerp(Quater qa, Quater qb, float t)
         {
-            Mathf.Clamp(t, 0, 1);
-            Quater q;
-            float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
-            if(Mathf.Abs(cosHalfTheta)>1)
+            // quaternion to return
+            Quater qm;
+            // Calculate angle between them.
+            float cosHalfTheta = qa._w * qb._w + qa._x * qb._x + qa._y * qb._y + qa._z * qb._z;
+            // if qa=qb or qa=-qb then theta = 0 and we can return qa
+            if (Mathf.Abs(cosHalfTheta) >= 1.0)
             {
-                q = a;
-                return q;
+                qm._w = qa._w; qm._x = qa._x; qm._y = qa._y; qm._z = qa._z;
+                return qm;
             }
-
+            // Calculate temporary values.
             float halfTheta = Mathf.Acos(cosHalfTheta);
-            float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
-            if(Mathf.Abs(sinHalfTheta) < 0.001f)
-            {
-                q._w = (a._w * 0.5f + b._w * 0.5f);
-                q._x = (a._x * 0.5f + b._x * 0.5f);
-                q._y = (a._y * 0.5f + b._y * 0.5f);
-                q._z = (a._z * 0.5f + b._z * 0.5f);
-                return q;
+            float sinHalfTheta = Mathf.Sqrt(1.0f - cosHalfTheta * cosHalfTheta);
+            // if theta = 180 degrees then result is not fully defined
+            // we could rotate around any axis normal to qa or qb
+            if (Mathf.Abs(sinHalfTheta) < 0.001)
+            { // fabs is floating point absolute
+                qm._w = (qa._w * 0.5f + qb._w * 0.5f);
+                qm._x = (qa._x * 0.5f + qb._x * 0.5f);
+                qm._y = (qa._y * 0.5f + qb._y * 0.5f);
+                qm._z = (qa._z * 0.5f + qb._z * 0.5f);
+                return qm;
             }
             float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
             float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+            //calculate Quaternion.
+            qm._w = (qa._w * ratioA + qb._w * ratioB);
+            qm._x = (qa._x * ratioA + qb._x * ratioB);
+            qm._y = (qa._y * ratioA + qb._y * ratioB);
+            qm._z = (qa._z * ratioA + qb._z * ratioB);
+            return qm;
+            /* Mathf.Clamp(t, 0, 1);
+             Quater q;
+             float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
+             if(Mathf.Abs(cosHalfTheta)>1)
+             {
+                 q = a;
+                 return q;
+             }
 
-            q._w = a._w * ratioA + b._w * ratioB;
-            q._x = a._x * ratioA + b._x * ratioB;
-            q._y = a._y * ratioA + b._y * ratioB;
-            q._z = a._z * ratioA + b._z * ratioB;
-            return q;
+             float halfTheta = Mathf.Acos(cosHalfTheta);
+             float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
+             if(Mathf.Abs(sinHalfTheta) < 0.001f)
+             {
+                 q._w = (a._w * 0.5f + b._w * 0.5f);
+                 q._x = (a._x * 0.5f + b._x * 0.5f);
+                 q._y = (a._y * 0.5f + b._y * 0.5f);
+                 q._z = (a._z * 0.5f + b._z * 0.5f);
+                 return q;
+             }
+             float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
+             float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+
+             q._w = a._w * ratioA + b._w * ratioB;
+             q._x = a._x * ratioA + b._x * ratioB;
+             q._y = a._y * ratioA + b._y * ratioB;
+             q._z = a._z * ratioA + b._z * ratioB;
+             return q;*/
         }
-        public static Quater SleepUnclamped(Quater a, Quater b, float t)
+        public static Quater SlerpUnclamped(Quater a, Quater b, float t)
         {
             Quater q;
             float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
             if (Mathf.Abs(cosHalfTheta) > 1)
             {
                 q = a;
-                return q;
             }
 
             float halfTheta = Mathf.Acos(cosHalfTheta);
@@ -198,7 +237,6 @@ namespace CustomMath
                 q._x = (a._x * 0.5f + b._x * 0.5f);
                 q._y = (a._y * 0.5f + b._y * 0.5f);
                 q._z = (a._z * 0.5f + b._z * 0.5f);
-                return q;
             }
             float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
             float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
