@@ -6,9 +6,8 @@ public class test : MonoBehaviour
 {
     [SerializeField] Transform obj1;
     [SerializeField] Transform obj2;
-
     [SerializeField] Vector3 xyz;
-    public float t = 0.5f;
+    [SerializeField] public float t = 0.5f;
     public float maxLenght = 5;
     [SerializeField] float angle;
     // Start is called before the first frame update
@@ -148,21 +147,21 @@ public class test : MonoBehaviour
         //Debug.Log("---------------------------------");
         //Debug.Log("QUATERNION INVERSE" + Quaternion.Inverse(_c));
         //Debug.Log("Quater INVERSE" + Quater.Inverse(_c_));
-        Debug.Log("---------------------------------");
+        //Debug.Log("---------------------------------");
         test = Quaternion.AngleAxis(angle, Vector3.up);
         Debug.Log(" QUATERNION AngleAxis" + "X: " + test.x + " Y: " + test.y + " Z: " + test.z + " W: " + test.w);
         Debug.Log(" Quater AngleAxis" + Quater.AngleAxis(angle, Vec3.Up));
-        Debug.Log("---------------------------------");
+        //Debug.Log("---------------------------------");
         test = Quaternion.Normalize(_c);
-        Debug.Log("QUATERNION NORMALIZE " + "X: " + test.x + " Y: " + test.y + " Z: " + test.z + " W: " + test.w);
-        Debug.Log(" Quater NORMALIZE " + Quater.Normalize(_c_));
+        //Debug.Log("QUATERNION NORMALIZE " + "X: " + test.x + " Y: " + test.y + " Z: " + test.z + " W: " + test.w);
+        //Debug.Log(" Quater NORMALIZE " + Quater.Normalize(_c_));
         //Debug.Log("---------------------------------");
         //Debug.Log("Quaternion Angle: " + Quaternion.Angle(obj1.rotation, obj2.rotation));
         //Debug.Log("Quater Angle: " +Quater.Angle(new Quater(obj1.rotation), new Quater(obj2.rotation)));
-        Debug.Log("---------------------------------");
-        test = Quaternion.Lerp(_c, _d, t);
-        Debug.Log("QUATERNION LERP " + "X: " + test.x + " Y: " + test.y + " Z: " + test.z + " W: " + test.w);
-        Debug.Log("Quater LERP " + Quater.Lerp(_c_, _d_, t));
+        //Debug.Log("---------------------------------");
+        //test = Quaternion.Lerp(_c, _d, t);
+        //Debug.Log("QUATERNION LERP " + "X: " + test.x + " Y: " + test.y + " Z: " + test.z + " W: " + test.w);
+        //Debug.Log("Quater LERP " + Quater.Lerp(_c_, _d_, t));
     }
     private void Update()
     {
@@ -171,9 +170,9 @@ public class test : MonoBehaviour
             Debug.Log("---------------------------------");
             Debug.Log("QUATERNION SLEEP " + Quaternion.Slerp(_c, _d, t));
             Debug.Log("Quater SLEEP " + Quater.Slerp(_c_, _d_, t));
+            Debug.Log("---------------------------------");
+            Debug.Log("QUAtTERNION SLEEPUNCLAMPED " + Quaternion.SlerpUnclamped(_c, _d, t));
+            Debug.Log("Quater SLEEPUNCLAMPED " + Quater.SlerpUnclamped(_c_, _d_, t));
         }
-       // Debug.Log("---------------------------------");
-       // Debug.Log("QUAtTERNION SLEEPUNCLAMPED " + Quaternion.SlerpUnclamped(_c, _d, t));
-       // Debug.Log("Quater SLEEPUNCLAMPED " + Quater.SlerpUnclamped(_c_, _d_, t));
     }
 }
