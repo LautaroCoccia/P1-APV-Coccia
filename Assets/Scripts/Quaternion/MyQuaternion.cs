@@ -30,7 +30,7 @@ namespace CustomMath
             
         //public float this[int index] { get NotImplementedException(); set; }
         public static Quater identity { get { return new Quater(0, 0, 0, 1); } }
-        //public Vector3 eulerAngles { get { } set { } }
+        //public Vec3 eulerAngles { get { } set { } }
         //public Quater normalized { get { } }
         //Funciones
         public static float Angle(Quater a, Quater b)
@@ -42,7 +42,7 @@ namespace CustomMath
             return rad;
             //acos(| a·b |) * 2 * (Pi / 180);
         }
-        public static Quater AngleAxis(float angle, Vector3 axis)
+        public static Quater AngleAxis(float angle, Vec3 axis)
         {
             Quater q;
             q._x = axis.x * Mathf.Sin(angle / 2);
@@ -70,7 +70,7 @@ namespace CustomMath
         {
             return (a._x * b._x) + (a._y * b._y) + (a._z * b._z) + (a._w * b._w);
         }
-        public static Quater Euler(Vector3 euler)
+        public static Quater Euler(Vec3 euler)
         {
             Quater q;
 
@@ -105,42 +105,49 @@ namespace CustomMath
             q = (X * Y * Z);
             return q;
         }
-        public static Quater FromToRotation(Vector3 fromDirection,Vector3 toDirection)
+        public static Quater FromToRotation(Vec3 fromDirection, Vec3 toDirection)
         {
-            throw new NotImplementedException();
+            Vec3 cross = Vec3.Cross(fromDirection, toDirection);
+            Quater q;
+            q._x = cross.x;
+            q._y = cross.y;
+            q._z = cross.z;
+            q._w = fromDirection.magnitude * toDirection.magnitude + Vec3.Dot(fromDirection, toDirection);
+            q.Normalize();
+            return q;
         }
         public static Quater Inverse(Quater rotation)
         {
-            rotation._x *= -1;
-            rotation._y *= -1;
-            rotation._z *= -1;
+            rotation._x = -1 * rotation._x;
+            rotation._y = -1 * rotation._y;
+            rotation._z = -1 * rotation._z;
             return rotation;
         }
         public static Quater Lerp(Quater a, Quater b, float t)
         {
-
             Mathf.Clamp(t, 0, 1);
-            //a._w = a._w + (b._w - a._w) * t;
-            //a._x = a._x + (b._x - a._x) * t;
-            //a._y = a._y + (b._y - a._y) * t;
-            //a._z = a._z + (b._z - a._z) * t;
-            a._x = (a._x * 1) - t + b._x * t;
-            a._y = (a._y * 1) - t + b._y * t;
-            a._z = (a._z * 1) - t + b._z * t;
-            a._w = (a._w * 1) - t + b._w * t;
+            a._x = (b._x - a._x) * t;
+            a._y = (b._y - a._y) * t;
+            a._z = (b._z - a._z) * t;
+            a._w = (b._w - a._w) * t;
             a.Normalize();
             return a;
 
         }
         public static Quater LerpUnclamped(Quater a, Quater b, float t)
         {
-            throw new NotImplementedException();
+            a._x = (b._x - a._x) * t;
+            a._y = (b._y - a._y) * t;
+            a._z = (b._z - a._z) * t;
+            a._w = (b._w - a._w) * t;
+            a.Normalize();
+            return a;
         }
-        public static Quater LookRotation(Vector3 foward)
+        public static Quater LookRotation(Vec3 foward)
         {
            throw new NotImplementedException();
         }
-        public static Quater LookRotation(Vector3 foward, Vector3 upwards)
+        public static Quater LookRotation(Vec3 foward, Vec3 upwards)
         {
             throw new NotImplementedException();
         }
@@ -165,82 +172,68 @@ namespace CustomMath
         }
         public static Quater Slerp(Quater qa, Quater qb, float t)
         {
-            // quaternion to return
-            Quater qm;
-            // Calculate angle between them.
-            float cosHalfTheta = qa._w * qb._w + qa._x * qb._x + qa._y * qb._y + qa._z * qb._z;
-            // if qa=qb or qa=-qb then theta = 0 and we can return qa
-            if (Mathf.Abs(cosHalfTheta) >= 1.0)
+            Mathf.Clamp(t, 0, 1);
+            Quater q = identity;
+            float cosHalfTheta = qa._x * qb._x + qa._y * qb._y + qa._z * qb._z * qa._w * qb._w;
+            if (cosHalfTheta < 0)
             {
-                qm._w = qa._w; qm._x = qa._x; qm._y = qa._y; qm._z = qa._z;
-                return qm;
+                qb._w = -qb._w;
+                qb._x = -qb._x;
+                qb._y = -qb._y;
+                qb._z = -qb._z;
+                cosHalfTheta = -cosHalfTheta;
             }
-            // Calculate temporary values.
-            float halfTheta = Mathf.Acos(cosHalfTheta);
-            float sinHalfTheta = Mathf.Sqrt(1.0f - cosHalfTheta * cosHalfTheta);
-            // if theta = 180 degrees then result is not fully defined
-            // we could rotate around any axis normal to qa or qb
-            if (Mathf.Abs(sinHalfTheta) < 0.001)
-            { // fabs is floating point absolute
-                qm._w = (qa._w * 0.5f + qb._w * 0.5f);
-                qm._x = (qa._x * 0.5f + qb._x * 0.5f);
-                qm._y = (qa._y * 0.5f + qb._y * 0.5f);
-                qm._z = (qa._z * 0.5f + qb._z * 0.5f);
-                return qm;
-            }
-            float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
-            float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
-            //calculate Quaternion.
-            qm._w = (qa._w * ratioA + qb._w * ratioB);
-            qm._x = (qa._x * ratioA + qb._x * ratioB);
-            qm._y = (qa._y * ratioA + qb._y * ratioB);
-            qm._z = (qa._z * ratioA + qb._z * ratioB);
-            return qm;
-            /* Mathf.Clamp(t, 0, 1);
-             Quater q;
-             float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
-             if(Mathf.Abs(cosHalfTheta)>1)
-             {
-                 q = a;
-                 return q;
-             }
-
-             float halfTheta = Mathf.Acos(cosHalfTheta);
-             float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
-             if(Mathf.Abs(sinHalfTheta) < 0.001f)
-             {
-                 q._w = (a._w * 0.5f + b._w * 0.5f);
-                 q._x = (a._x * 0.5f + b._x * 0.5f);
-                 q._y = (a._y * 0.5f + b._y * 0.5f);
-                 q._z = (a._z * 0.5f + b._z * 0.5f);
-                 return q;
-             }
-             float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
-             float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
-
-             q._w = a._w * ratioA + b._w * ratioB;
-             q._x = a._x * ratioA + b._x * ratioB;
-             q._y = a._y * ratioA + b._y * ratioB;
-             q._z = a._z * ratioA + b._z * ratioB;
-             return q;*/
-        }
-        public static Quater SlerpUnclamped(Quater a, Quater b, float t)
-        {
-            Quater q;
-            float cosHalfTheta = a._w * b._w + a._x * b._x + a._y * b._y + a._z * b._z;
             if (Mathf.Abs(cosHalfTheta) > 1)
             {
-                q = a;
+                q = qa;
+                return q;
             }
 
             float halfTheta = Mathf.Acos(cosHalfTheta);
             float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
-            if (Mathf.Abs(sinHalfTheta) < 0.001f)
+            if (Mathf.Abs(sinHalfTheta) <= 0)
             {
-                q._w = (a._w * 0.5f + b._w * 0.5f);
-                q._x = (a._x * 0.5f + b._x * 0.5f);
-                q._y = (a._y * 0.5f + b._y * 0.5f);
-                q._z = (a._z * 0.5f + b._z * 0.5f);
+                q._w = (qa._w / 2 + qb._w / 2);
+                q._x = (qa._x / 2 + qb._x / 2);
+                q._y = (qa._y / 2 + qb._y / 2);
+                q._z = (qa._z / 2 + qb._z / 2);
+            }
+            float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
+            float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
+
+            q._w = qa._w * ratioA + qb._w * ratioB;
+            q._x = qa._x * ratioA + qb._x * ratioB;
+            q._y = qa._y * ratioA + qb._y * ratioB;
+            q._z = qa._z * ratioA + qb._z * ratioB;
+            return q;
+        }
+        public static Quater SlerpUnclamped(Quater a, Quater b, float t)
+        {
+            Quater q = identity;
+            float cosHalfTheta = a._x * b._x + a._y * b._y + a._z * b._z * a._w * b._w;
+
+            if (cosHalfTheta < 0)
+            {
+                b._w = -b._w;
+                b._x = -b._x;
+                b._y = -b._y;
+                b._z = -b._z;
+                cosHalfTheta = -cosHalfTheta;
+            }
+            if (Mathf.Abs(cosHalfTheta) > 1)
+            {
+                q = a;
+                return q;
+            }
+
+            float halfTheta = Mathf.Acos(cosHalfTheta);
+            float sinHalfTheta = Mathf.Sqrt(1 - cosHalfTheta * cosHalfTheta);
+            if (Mathf.Abs(sinHalfTheta) <= 0)
+            {
+                q._w = (a._w / 2 + b._w / 2);
+                q._x = (a._x / 2 + b._x / 2);
+                q._y = (a._y / 2 + b._y / 2);
+                q._z = (a._z / 2 + b._z / 2);
             }
             float ratioA = Mathf.Sin((1 - t) * halfTheta) / sinHalfTheta;
             float ratioB = Mathf.Sin(t * halfTheta) / sinHalfTheta;
@@ -303,10 +296,26 @@ namespace CustomMath
         {
             return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
         }
-       // public static Vector3 operator *(Quater rotation, Vector3 point)
-       // {
-       //
-       // }
+        public static Vec3 operator *(Quater rotation, Vec3 point)
+        {
+            float n1 = rotation._x * 2;
+            float n2 = rotation._y * 2;
+            float n3 = rotation._z * 2;
+            float n4 = rotation._x * n1;
+            float n5 = rotation._y * n2;
+            float n6 = rotation._z * n3;
+            float n7 = rotation._x * n2;
+            float n8 = rotation._x * n3;
+            float n9 = rotation._y * n3;
+            float n10 = rotation._w * n1;
+            float n11 = rotation._w * n2;
+            float n12 = rotation._w * n3;
+            Vec3 vec;
+            vec.x = (1 - (n5 + n6)) * point.x + (n7 - n12) * point.y + (n8 + n11) * point.z;
+            vec.y = (n7 + n12) * point.x + (1 - (n4 + n6)) * point.y + (n9 - n10) * point.z;
+            vec.z = (n8 - n11) * point.x + (n9 + n10) * point.y + (1 - (n4 + n5)) * point.z;
+            return vec;
+        }
         public static Quater operator *(Quater a, Quater b)
         {
             float w = (a._w * b._w) - (a._x * b._x) - (a._y * b._y) - (a._z * b._z);
