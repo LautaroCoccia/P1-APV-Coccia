@@ -4,6 +4,9 @@ using UnityEngine;
 using CustomMath;
 public class test : MonoBehaviour
 {
+    [SerializeField] Transform obj1;
+    [SerializeField] Transform obj2;
+
     [SerializeField] Vector3 xyz;
     public float t = 0.5f;
     public float maxLenght = 5;
@@ -135,12 +138,13 @@ public class test : MonoBehaviour
         #endregion
         Quater q = _c_ ;
         Quaternion _q = _c ;
-        
+
         //Debug.Log("Multiplicacion de Quater " + q.ToString());
         //Debug.Log("Multiplicacion de Quaternion " + _q.ToString());
+        Quaternion test = Quaternion.Euler(xyz);
         Debug.Log("Euler de Quater float " + Quater.Euler(xyz.x, xyz.y, xyz.z));
         Debug.Log("Euler de Quater vector3 " + Quater.Euler(xyz));
-        Debug.Log("Euler de Quaterion " + Quaternion.Euler(xyz.x, xyz.y, xyz.z));
+        Debug.Log("Euler de Quaterion " + "X: " + test.x + " Y: " + test.y +" Z: " + test.z + " W: " + test.w);
         Debug.Log("---------------------------------");
         Debug.Log("QUATERNION INVERSE" + Quaternion.Inverse(_c));
         Debug.Log("Quater INVERSE" + Quater.Inverse(_c_));
@@ -151,15 +155,14 @@ public class test : MonoBehaviour
         Debug.Log("QUATERNION NORMALIZE " + Quaternion.Normalize(_c));
         Debug.Log(" Quater NORMALIZE " + Quater.Normalize(_c_));
         Debug.Log("---------------------------------");
-        Debug.Log(" QUATERNION Angle " + Quaternion.Angle(_c, _d));
-        Debug.Log(" Quater Angle " + Quater.Angle(_c_, _d_));
+        Debug.Log("Quaternion Angle: " + Quaternion.Angle(obj1.rotation, obj2.rotation));
+        Debug.Log("Quater Angle: " +Quater.Angle(new Quater(obj1.rotation), new Quater(obj2.rotation)));
         Debug.Log("---------------------------------");
         Debug.Log("QUATERNION LERP " + Quaternion.Lerp(_c, _d, t));
         Debug.Log("Quater LERP " + Quater.Lerp(_c_, _d_, t));
     }
     private void Update()
     {
-        xyz = xyz;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("---------------------------------");

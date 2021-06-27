@@ -19,6 +19,13 @@ namespace CustomMath
             _z = z;
             _w = w;
         }
+        public Quater(Quaternion a)
+        {
+            _x = a.x;
+            _y = a.y;
+            _z = a.z;
+            _w = a.w;
+        }
             
         //public float this[int index] { get NotImplementedException(); set; }
         public static Quater identity { get { return new Quater(0, 0, 0, 1); } }
@@ -28,13 +35,11 @@ namespace CustomMath
         public static float Angle(Quater a, Quater b)
         {
             float dot = Dot(a, b);
-            float magFrom = ((a._x * a._x) + (a._y * a._y) + (a._z * a._z) + (a._w * a._w));
-            float magTo = ((b._x * b._x) + (b._y * b._y) + (b._z * b._z) + (b._w * b._w));
-            float aux = Mathf.Sqrt(magFrom * magTo);
-            float aux2 = dot / aux;
-            float rad = (float)Mathf.Acos(aux2);
-            float acos = Mathf.Rad2Deg * rad;
-            return acos;
+            float abs = Mathf.Min(Mathf.Abs(dot));
+            float acos = Mathf.Acos(abs);
+            float rad = acos * 2 * Mathf.Rad2Deg;
+            return rad;
+            //acos(| a·b |) * 2 * (Pi / 180);
         }
         public static Quater AngleAxis(float angle, Vector3 axis)
         {
@@ -282,7 +287,7 @@ namespace CustomMath
         {
             return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
         }
-       // public static Vector3 operator *(Quater rotation, /Vector3 /point)
+       // public static Vector3 operator *(Quater rotation, Vector3 /point)
        // {
        //
        // }
