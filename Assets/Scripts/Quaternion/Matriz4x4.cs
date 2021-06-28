@@ -87,11 +87,11 @@ namespace CustomMath
                             case 0:
                                 return m00;
                             case 1:
-                                return m01;
+                                return m10;
                             case 2:
-                                return m02;
+                                return m20;
                             case 3:
-                                return m03;
+                                return m30;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
                         }
@@ -99,13 +99,13 @@ namespace CustomMath
                         switch (column)
                         {
                             case 0:
-                                return m10;
-                            case 1:
+                                return m01;
+                            case 1:      
                                 return m11;
-                            case 2:
-                                return m12;
-                            case 3:
-                                return m13;
+                            case 2:      
+                                return m21;
+                            case 3:      
+                                return m31;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
                         }
@@ -113,13 +113,13 @@ namespace CustomMath
                         switch (column)
                         {
                             case 0:
-                                return m20;
-                            case 1:
-                                return m21;
-                            case 2:
+                                return m02;
+                            case 1:      
+                                return m12;
+                            case 2:      
                                 return m22;
-                            case 3:
-                                return m23;
+                            case 3:      
+                                return m32;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
                         }
@@ -127,12 +127,12 @@ namespace CustomMath
                         switch (column)
                         {
                             case 0:
-                                return m30;
-                            case 1:
-                                return m31;
-                            case 2:
-                                return m32;
-                            case 3:
+                                return m03;
+                            case 1:      
+                                return m13;
+                            case 2:      
+                                return m23;
+                            case 3:      
                                 return m33;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
@@ -182,8 +182,37 @@ namespace CustomMath
         }*/
         //public Vector3 lossyScale { get; }
         
-        //public Matriz4x4 inverse { get; }
-        //public static Matriz4x4 Inverse(Matriz4x4 m);
+        public Matriz4x4 inverse { get { return Inverse(this); } }
+        public static Matriz4x4 Inverse(Matriz4x4 m)
+        {
+            m.m01 = m.m01 *-1;
+            m.m10 = m.m10 *-1;
+
+            m.m02 = m.m02 *-1;
+            m.m20 = m.m20 *-1;
+
+            m.m12 = m.m12 *-1;
+            m.m21 = m.m21 *-1;
+
+            m.m12 = m.m12 *-1;
+            m.m21 = m.m21 *-1;
+
+            m.m03 = m.m03 *-1;
+            m.m30 = m.m30 *-1;
+
+            m.m13 = m.m13 *-1;
+            m.m31 = m.m31 *-1;
+
+            m.m23 = m.m23 *-1;
+            m.m32 = m.m32 *-1;
+
+            Vector4 column0 = new Vector4(m.m00, m.m01, m.m02, m.m03);
+            Vector4 column1 = new Vector4(m.m10, m.m11, m.m12, m.m13);
+            Vector4 column2 = new Vector4(m.m20, m.m21, m.m22, m.m23);
+            Vector4 column3 = new Vector4(m.m30, m.m31, m.m32, m.m33);
+
+            return new Matriz4x4(column0, column1, column2, column3);
+        }
         public static Matriz4x4 Rotate(Quaternion q)
         {
             Matriz4x4 m = Matriz4x4.identity;

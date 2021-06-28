@@ -28,6 +28,9 @@ public class TestMatriz : MonoBehaviour
         Matriz4 = Matriz4x4.Translate(translateVec);
         Matriz4 = Matriz4x4.Rotate(test);
         
+        Matrix4 = Matrix4x4.Inverse(Matrix4);
+        //Matriz4 = Matriz4x4.Inverse(Matriz4); No anda
+        
         Debug.Log("MATRIX4X4 " + "\n" + Matrix4);
         Debug.Log("MATRIZ4X4 " + "\n" + Matriz4);
     }
