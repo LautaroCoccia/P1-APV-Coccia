@@ -241,19 +241,75 @@ namespace CustomMath
             return this == other;
 
         }
-        //public Vector4 GetColumn(int index);
+        public Vector4 GetColumn(int index)
+        {                                  
+            switch(index)                  
+            {                              
+                case 0:
+                    return new Vector4(m00, m10, m20, m30);
+                case 1:
+                    return new Vector4(m01, m11, m21, m31);
+                case 2:
+                    return new Vector4(m02, m12, m22, m32);
+                case 3:
+                    return new Vector4(m03, m13, m23, m33);
+                default:
+                    throw new IndexOutOfRangeException("Invalid Index");
+            }
+        }
         //public Vector3 MultiplyPoint(Vector3 point);
         //public Vector3 MultiplyPoint3x4(Vector3 point);
         //public Vector3 MultiplyVector(Vector3 vector);
-        //public void SetColumn(int index, Vector4 column);
-        //public void SetRow(int index, Vector4 row);
-        //public void SetTRS(Vector3 pos, Quaternion q, Vector3 s);
+        public void SetColumn(int index, Vector4 column)
+        {
+            switch (index)
+            {
+                case 0:
+                    m00 = column.x; m10 = column.y; m20 = column.z; m30 = column.w;
+                    break;
+                case 1:
+                    m01 = column.x; m11 = column.y; m21 = column.z; m31 = column.w;
+                    break;
+                case 2:
+                    m02 = column.x; m12 = column.y; m22 = column.z; m32 = column.w;
+                    break;
+                case 3:
+                    m03 = column.x; m13 = column.y; m23 = column.z; m33 = column.w;
+                    break;
+                default:
+                    throw new IndexOutOfRangeException("Invalid Index");
+            }
+        }
+        public void SetRow(int index, Vector4 row)
+        {
+            switch (index)
+            {
+                case 0:
+                    m00 = row.x; m01 = row.y; m02 = row.z; m03 = row.w;
+                    break;
+                case 1:
+                    m10 = row.x; m11 = row.y; m12 = row.z; m13 = row.w;
+                    break;
+                case 2:
+                    m20 = row.x; m21 = row.y; m22 = row.z; m23 = row.w;
+                    break;
+                case 3:
+                    m30 = row.x; m31 = row.y; m32 = row.z; m33 = row.w;
+                    break;
+                default:
+                    throw new IndexOutOfRangeException("Invalid Index");
+            }
+        }
+        public void SetTRS(Vector3 pos, Quaternion q, Vector3 s)
+        {
+            TRS(pos, q, s);
+        }
         public override string ToString()
         {
-            return ("m00 " + m00 + " m01 " + m01 + " m02 " + m02 + " m03 " + m03 +
-                  "\nm10 " + m10 + " m11 " + m11 + " m12 " + m12 + " m13 " + m13 +
-                  "\nm20 " + m20 + " m21 " + m21 + " m22 " + m22 + " m23 " + m23 +
-                  "\nm30 " + m30 + " m31 " + m31 + " m32 " + m32 + " m33 " + m33);
+            return (" " + m00 + "  " + m01 + "  " + m02 + "  " + m03 +
+                  "\n " + m10 + "  " + m11 + "  " + m12 + "  " + m13 +
+                  "\n " + m20 + "  " + m21 + "  " + m22 + "  " + m23 +
+                  "\n " + m30 + "  " + m31 + "  " + m32 + "  " + m33);
         }
         public static Vector4 operator *(Matriz4x4 a, Vector4 vector)
         {

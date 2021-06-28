@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 86048851}
   - component: {fileID: 86048850}
   - component: {fileID: 86048849}
+  - component: {fileID: 86048853}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -306,6 +307,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &86048853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86048848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50b0a6221cb08244b5da0119b868e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Matrix4:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 1
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 1
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  scaleVec: {x: 1, y: 2, z: 3}
+  translateVec: {x: 3, y: 4, z: 5}
+  rotateVec: {x: 45, y: 90, z: 45}
 --- !u!1 &386667249
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +434,7 @@ GameObject:
   - component: {fileID: 848651809}
   - component: {fileID: 848651811}
   - component: {fileID: 848651812}
+  - component: {fileID: 848651813}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -433,7 +467,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 848651808}
-  m_LocalRotation: {x: 0.04178843, y: 0, z: 0, w: 0.9991265}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -468,3 +502,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ejer: 0
   ANGLE: 1
+--- !u!114 &848651813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848651808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50b0a6221cb08244b5da0119b868e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Matrix4:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 0
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 0
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 0
+  scaleVec: {x: 4, y: 5, z: 6}
+  translateVec: {x: 1, y: 2, z: 3}
+  rotateVec: {x: 0, y: 0, z: 0}
