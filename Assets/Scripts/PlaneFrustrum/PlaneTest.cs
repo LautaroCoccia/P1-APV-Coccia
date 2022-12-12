@@ -18,8 +18,8 @@ public class PlaneTest : MonoBehaviour
         MyPlane b = new MyPlane(A, B);
         Debug.Log("DISTANCE : " + Z.distance);
         Debug.Log("NORMAL : " + Z.normal);
-        Debug.Log("distance : " + b.distance);
-        Debug.Log("normal : " + b.normal);
+        Debug.Log("distance : " + b.Distance());
+        Debug.Log("normal : " + b.Normal());
         Debug.Log("GETDISTANCE" + Z.ClosestPointOnPlane(C));
         Debug.Log("getDistance" + b.ClosestPointOnPlane(A));
         Debug.Log("angle" + Vector3.Angle(A,B));

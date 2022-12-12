@@ -36,8 +36,6 @@ public class EjerciciosQuaternion : MonoBehaviour
         Vector3Debugger.AddVector(ejer1,ejer2, Color.yellow, "EL AMARILLO");
         Vector3Debugger.AddVector(ejer2,ejer3, Color.white, "EL BLANCO");
         Vector3Debugger.AddVector(ejer3, ejer4, Color.black, "EL NEGRO");
-
-        
         
         //Ejer 2
         ejer5 = ejer1;

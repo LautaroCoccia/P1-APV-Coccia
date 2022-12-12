@@ -368,8 +368,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e4fe393279ccb419d19e906e5c4263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obj1: {fileID: 0}
+  obj2: {fileID: 0}
+  xyz: {x: 0, y: 0, z: 0}
   t: 0.5
   maxLenght: 5
+  angle: 0
 --- !u!4 &1509134643
 Transform:
   m_ObjectHideFlags: 0

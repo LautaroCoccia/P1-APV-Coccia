@@ -5,8 +5,26 @@ namespace CustomMath
     [SerializeField]
     public struct MyPlane
     {
-        public Vec3 normal;
-        public float distance;
+        Vec3 normal;
+        float distance;
+        public float Distance()
+        {
+            return distance;
+        }
+        public Vec3 Flipped()
+        {
+            return -normal;
+        }
+        public Vec3 Normal()
+        {
+            return normal;
+        }
+
+        public override string ToString()
+        {
+            return "Normal: " + normal.ToString() + ", Distance: " + distance;
+        }
+
         public MyPlane(Vec3 inNormal, Vec3 inPoint)
         {
             normal = inNormal.normalized;
@@ -19,24 +37,16 @@ namespace CustomMath
         }
         public MyPlane(Vec3 a, Vec3 b, Vec3 c)
         {
-            normal = Vec3.Cross(b - a, c - a).normalized;
+            normal = Vec3.Cross(b - a, c - a);
             distance = -Vec3.Dot(normal, a);
         }
         public void Set3Points(Vec3 a, Vec3 b, Vec3 c)
         {
-            Vec3 vec1 = b - a;
-            Vec3 vec2 = c - a;
-            normal = Vec3.Cross(vec1, vec2).normalized;
+            normal = Vec3.Cross(b - a, c - a);
             distance = -Vec3.Dot(normal, a);
         }
 
-        public MyPlane flipped
-        {
-            get
-            {
-                return new MyPlane(-normal, -normal * distance);
-            }
-        }
+        
         public Vec3 ClosestPointOnPlane(Vec3 point)
         {
             Vec3 aux = (point - normal) / GetDistanceToPoint(point);
@@ -49,7 +59,7 @@ namespace CustomMath
         }
         public float GetDistanceToPoint(Vec3 point)
         {
-            float aux = Vec3.Dot(normal, point)+ distance;
+            float aux = Vec3.Dot(point, normal) + distance ;
             return aux;
         }
         public bool GetSide(Vec3 point)

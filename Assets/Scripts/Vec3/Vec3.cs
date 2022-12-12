@@ -32,6 +32,8 @@ namespace CustomMath
         public static Vec3 PositiveInfinity { get { return new Vec3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity); } }
         public static Vec3 NegativeInfinity { get { return new Vec3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity); } }
         #endregion
+
+
         #region Constructors
         public Vec3(float x, float y)
         {
@@ -127,20 +129,19 @@ namespace CustomMath
         }
         public static float Angle(Vec3 from, Vec3 to)
         {
+
             float dot = Dot(from, to);
-            float magFrom = SqrMagnitude(from);
-            float magTo = SqrMagnitude(to);
-            float aux = Mathf.Sqrt( magFrom * magTo);
-            float aux2 = dot / aux;
-            float rad = (float)Mathf.Acos(aux2);
-            float acos = Mathf.Rad2Deg * rad;
-            return acos;
+            float mag = Magnitude(from) * Magnitude(to);
+            float ang = dot / mag;
+            return ang = Mathf.Acos(ang) * Mathf.Rad2Deg;
+
         }
         public static Vec3 ClampMagnitude(Vec3 vector, float maxLength)
         {
             if(Magnitude(vector)>maxLength)
             {
-               return new Vec3(vector.normalized.x * maxLength, vector.normalized.y * maxLength,vector.normalized.z *maxLength );
+                vector.Normalize();
+                return new Vec3(vector.normalized.x * maxLength, vector.normalized.y * maxLength,vector.normalized.z *maxLength );
             }
             return vector;
         }
@@ -168,8 +169,8 @@ namespace CustomMath
         public static Vec3 Lerp(Vec3 a, Vec3 b, float t)
         {
             Mathf.Clamp(t, 0, 1);
-            a = a + (b - a) * t;
-            a.Normalize();
+
+            a = (b - a) * t + a;
             return a;
         }
         public static Vec3 LerpUnclamped(Vec3 a, Vec3 b, float t)
@@ -236,9 +237,9 @@ namespace CustomMath
         }
         public void Scale(Vec3 scale)
         {
-            x = x * scale.x;
-            y = y * scale.y;
-            z = z * scale.z;
+            this.x = this.x * scale.x;
+            this.y = this.y * scale.y;
+            this.z = this.z * scale.z;
         }
         public void Normalize()
         {

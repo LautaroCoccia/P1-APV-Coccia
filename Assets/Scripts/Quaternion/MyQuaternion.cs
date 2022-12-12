@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Internal;
+using CustomMath;
 
 namespace CustomMath
 {
@@ -27,11 +26,122 @@ namespace CustomMath
             _z = a.z;
             _w = a.w;
         }
-            
-        //public float this[int index] { get NotImplementedException(); set; }
+
+        public float this[int index]
+        {
+            get
+            {
+                switch (index)
+                {
+                    case 0:
+                        return _x;
+                    case 1:
+                        return _y;
+                    case 2:
+                        return _z;
+                    case 3:
+                        return _w;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Index");
+                }
+            }
+            set
+            {
+                switch (index)
+                {
+                    case 0:
+                        _x = value;
+                        break;
+                    case 1:
+                        _y = value;
+                        break;
+                    case 2:
+                        _z = value;
+                        break;
+                    case 3:
+                        _w = value;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("Invalid Index");
+                }
+            }
+        }
         public static Quater identity { get { return new Quater(0, 0, 0, 1); } }
-        //public Vec3 eulerAngles { get { } set { } }
-        //public Quater normalized { get { } }
+        public Vec3 eulerAngles
+        {
+            get
+            {
+                // Cos(ang°/2) + Sin(ang°/2)(i + j + k) <- Formula de quaterniones en base a angulos.
+                // W es el Cos(ang°/2)
+                // con estos calculos se calcula la forma de un quaternion base
+
+                float sinX = 2 * (_w * _x + _y * _z);
+                float cosX = 1 - 2 * (_x * _x + _y * _y);
+                float eulerX = Mathf.Atan2(sinX, cosX) * Mathf.Rad2Deg;
+
+                float sinY = 2 * (_w * _y - _z * _x);
+                float eulerY = Mathf.PI / 2;
+
+                if (Mathf.Abs(sinY) >= 1)
+                {
+                    if (sinY < 0)
+                    {
+                        eulerY = -eulerY;
+                    }
+                }
+                else
+                {
+                    eulerY = Mathf.Asin(sinY) * Mathf.Rad2Deg;
+                }
+
+                float sinZ = 2 * (_w * _z + _x * _y);
+                float cosZ = 1 - 2 * (_y * _y + _z * _z);
+                float eulerZ = Mathf.Atan2(sinZ, cosZ) * Mathf.Rad2Deg;
+
+                return new Vec3(eulerX, eulerY, eulerZ);
+            }
+            set
+            {
+                Quater quat = Euler(value);
+                this._x = quat._x;
+                this._y = quat._y;
+                this._z = quat._z;
+                this._w = quat._w;
+            }
+        }
+        public Quater normalized {
+            get
+            {
+                // Magnitud
+                float mag = Mathf.Sqrt((_x * _x) + (_y * _y) + (_z * _z) + (_w * _w));
+                // Normalize
+                return new Quater(this._x / mag, this._y / mag, this._z / mag, this._w / mag);
+            }
+        }
+        public void SetFromToRotation(Vec3 fromDirection, Vec3 toDirection)
+        {
+
+            throw new NotImplementedException();
+        }
+        public void SetLookRotation(Vec3 view, [DefaultValue("Vec3.Up")] Vec3 up)
+        {
+            throw new NotImplementedException();
+
+        }
+        public void SetLookRotation(Vec3 view)
+        {
+            throw new NotImplementedException();
+
+        }
+        public void ToAngleAxis(out float angle, out Vec3 axis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
+        }
         //Funciones
         public static float Angle(Quater a, Quater b)
         {
@@ -44,6 +154,8 @@ namespace CustomMath
         }
         public static Quater AngleAxis(float angle, Vec3 axis)
         {
+            if (axis.sqrMagnitude == 0)
+                return identity;
             Quater q;
             q._x = axis.x * Mathf.Sin(angle / 2);
             q._y = axis.y * Mathf.Sin(angle / 2);
@@ -143,13 +255,62 @@ namespace CustomMath
             a.Normalize();
             return a;
         }
-        public static Quater LookRotation(Vec3 foward)
+        public static Quater LookRotation(Vec3 forward, Vec3 upwards)
         {
-           throw new NotImplementedException();
-        }
-        public static Quater LookRotation(Vec3 foward, Vec3 upwards)
-        {
-            throw new NotImplementedException();
+            Vec3 upForwardCross = Vec3.Cross(upwards, forward);
+            Vec3 right = new Vec3();
+            right.x = upForwardCross.x / (Mathf.Sqrt(upForwardCross.x * upForwardCross.x + upForwardCross.y * upForwardCross.y + upForwardCross.z * upForwardCross.z));
+            right.y = upForwardCross.y / (Mathf.Sqrt(upForwardCross.x * upForwardCross.x + upForwardCross.y * upForwardCross.y + upForwardCross.z * upForwardCross.z));
+            right.z = upForwardCross.z / (Mathf.Sqrt(upForwardCross.x * upForwardCross.x + upForwardCross.y * upForwardCross.y + upForwardCross.z * upForwardCross.z));
+
+            // se reemplaza el up default por uno usando los otros vectores.
+            upwards.x = forward.y * right.y - right.z * forward.z;
+            upwards.y = forward.z * right.z - forward.x * right.x;
+            upwards.z = forward.x * right.x - forward.y * right.y;
+
+            // Suma total
+            float totalSum = right.x + upwards.y + forward.z;
+            Quater q = new Quater();
+
+            if (totalSum > 0f)
+            {
+                float sqrtTotalSum = Mathf.Sqrt(totalSum + 1.0f);
+                q._w = sqrtTotalSum * 0.5f;
+                sqrtTotalSum = 0.5f / sqrtTotalSum;
+                q._x = (upwards.z - forward.y) * sqrtTotalSum;
+                q._y = (forward.x - right.z) * sqrtTotalSum;
+                q._z = (right.y - upwards.x) * sqrtTotalSum;
+                return q;
+            }
+            if ((right.x >= upwards.y) && (right.x >= forward.z))
+            {
+                float num7 = Mathf.Sqrt(((1.0f + right.x) - upwards.y) - forward.z);
+                float num4 = 0.5f / num7;
+                q._x = 0.5f * num7;
+                q._y = (right.y + upwards.x) * num4;
+                q._z = (right.z + forward.x) * num4;
+                q._w = (upwards.z - forward.y) * num4;
+                return q;
+            }
+            if (upwards.y > forward.z)
+            {
+                float num6 = (float)System.Math.Sqrt(((1f + upwards.y) - right.x) - forward.z);
+                float num3 = 0.5f / num6;
+                q._x = (upwards.x + right.y) * num3;
+                q._y = 0.5f * num6;
+                q._z = (forward.y + upwards.z) * num3;
+                q._w = (forward.x - right.z) * num3;
+                return q;
+            }
+
+            float num5 = Mathf.Sqrt(((1f + forward.x) - right.x) - upwards.y);
+            float num2 = 0.5f / num5;
+            q._x = (forward.x + right.z) * num2;
+            q._y = (forward.y + upwards.z) * num2;
+            q._z = 0.5f * num5;
+            q._w = (right.y - upwards.x) * num2;
+
+            return q;
         }
         public static Quater Normalize(Quater q)
         {
@@ -275,27 +436,7 @@ namespace CustomMath
             _z = newZ;
             _w = newW;
         }
-        public void SetFromToRotation(Vec3 fromDirection, Vec3 toDirection)
-        {
-
-        }
-        public void SetLookRotation(Vec3 view, [DefaultValue("Vec3.Up") ] Vec3 up)
-        {
-
-        }
-        public void SetLookRotation(Vec3 view)
-        {
-
-        }
-        public void ToAngleAxis(out float angle, out Vec3 axis)
-        {
-            throw new NotImplementedException();
-        }
         
-        public override string ToString()
-        {
-            return "X = " + _x.ToString() + "   Y = " + _y.ToString() + "   Z = " + _z.ToString() + "   W = " + _w.ToString();
-        }
         public static Vec3 operator *(Quater rotation, Vec3 point)
         {
             float n1 = rotation._x * 2;

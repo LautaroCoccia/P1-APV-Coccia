@@ -24,13 +24,7 @@ namespace CustomMath
         public float m10;
         public float m31;
 
-        public Matriz4x4(Vector4 column0, Vector4 column1, Vector4 column2, Vector4 column3)
-        {
-            m00 = column0.x; m01 = column1.x; m02 = column2.x; m03 = column3.x;
-            m10 = column0.y; m11 = column1.y; m12 = column2.y; m13 = column3.y;
-            m20 = column0.z; m21 = column1.z; m22 = column2.z; m23 = column3.z;
-            m30 = column0.w; m31 = column1.w; m32 = column2.w; m33 = column3.w;
-        }
+
         public float this[int index]
         {
             get
@@ -76,13 +70,14 @@ namespace CustomMath
             }
             //Poner un setter
         }
-        public float this[int row, int column] {
+        public float this[int row, int column]
+        {
             get
             {
-                switch(row)
+                switch (row)
                 {
                     case 0:
-                        switch(column)
+                        switch (column)
                         {
                             case 0:
                                 return m00;
@@ -100,11 +95,11 @@ namespace CustomMath
                         {
                             case 0:
                                 return m01;
-                            case 1:      
+                            case 1:
                                 return m11;
-                            case 2:      
+                            case 2:
                                 return m21;
-                            case 3:      
+                            case 3:
                                 return m31;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
@@ -114,11 +109,11 @@ namespace CustomMath
                         {
                             case 0:
                                 return m02;
-                            case 1:      
+                            case 1:
                                 return m12;
-                            case 2:      
+                            case 2:
                                 return m22;
-                            case 3:      
+                            case 3:
                                 return m32;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
@@ -128,11 +123,11 @@ namespace CustomMath
                         {
                             case 0:
                                 return m03;
-                            case 1:      
+                            case 1:
                                 return m13;
-                            case 2:      
+                            case 2:
                                 return m23;
-                            case 3:      
+                            case 3:
                                 return m33;
                             default:
                                 throw new IndexOutOfRangeException("Invalid Index");
@@ -140,10 +135,26 @@ namespace CustomMath
                     default:
                         throw new IndexOutOfRangeException("Invalid Index");
                 }
-            } 
+            }
             //agregar setter 
         }
 
+        public Matriz4x4 transpose
+        {
+            get
+            {
+                return Transpose(this);
+            }
+        }
+
+        public Matriz4x4 inverse { get { return Inverse(this); } }
+        public Matriz4x4(Vector4 column0, Vector4 column1, Vector4 column2, Vector4 column3)
+        {
+            m00 = column0.x; m01 = column1.x; m02 = column2.x; m03 = column3.x;
+            m10 = column0.y; m11 = column1.y; m12 = column2.y; m13 = column3.y;
+            m20 = column0.z; m21 = column1.z; m22 = column2.z; m23 = column3.z;
+            m30 = column0.w; m31 = column1.w; m32 = column2.w; m33 = column3.w;
+        }
         public static Matriz4x4 zero
         {
             get
@@ -165,53 +176,6 @@ namespace CustomMath
                 Vector4 vecW = new Vector4(0f, 0f, 0f, 1f);
                 return new Matriz4x4(vecX, vecY, vecZ, vecW);
             }
-        }
-        public Matriz4x4 transpose
-        {
-            get
-            {
-                return Transpose(this);
-            }
-        }
-        /*public Quaternion rotation
-        {
-            get
-            {
-                Quaternion q = Quaternion.identity;
-            }
-        }*/
-        //public Vector3 lossyScale { get; }
-        
-        public Matriz4x4 inverse { get { return Inverse(this); } }
-        public static Matriz4x4 Inverse(Matriz4x4 m)
-        {
-            m.m01 = m.m01 *-1;
-            m.m10 = m.m10 *-1;
-
-            m.m02 = m.m02 *-1;
-            m.m20 = m.m20 *-1;
-
-            m.m12 = m.m12 *-1;
-            m.m21 = m.m21 *-1;
-
-            m.m12 = m.m12 *-1;
-            m.m21 = m.m21 *-1;
-
-            m.m03 = m.m03 *-1;
-            m.m30 = m.m30 *-1;
-
-            m.m13 = m.m13 *-1;
-            m.m31 = m.m31 *-1;
-
-            m.m23 = m.m23 *-1;
-            m.m32 = m.m32 *-1;
-
-            Vector4 column0 = new Vector4(m.m00, m.m01, m.m02, m.m03);
-            Vector4 column1 = new Vector4(m.m10, m.m11, m.m12, m.m13);
-            Vector4 column2 = new Vector4(m.m20, m.m21, m.m22, m.m23);
-            Vector4 column3 = new Vector4(m.m30, m.m31, m.m32, m.m33);
-
-            return new Matriz4x4(column0, column1, column2, column3);
         }
         public static Matriz4x4 Rotate(Quaternion q)
         {
@@ -247,8 +211,10 @@ namespace CustomMath
         }
         public static Matriz4x4 Transpose(Matriz4x4 m)
         {
-            return new Matriz4x4(new Vector4(m.m00, m.m01, m.m02, m.m03), new Vector4(m.m10, m.m11, m.m12, m.m13),
-                                 new Vector4(m.m20, m.m21, m.m22, m.m23), new Vector4(m.m30, m.m31, m.m32, m.m33));
+            return new Matriz4x4(new Vector4(m.m00, m.m01, m.m02, m.m03), 
+                                 new Vector4(m.m10, m.m11, m.m12, m.m13),
+                                 new Vector4(m.m20, m.m21, m.m22, m.m23),
+                                 new Vector4(m.m30, m.m31, m.m32, m.m33));
         }
         public static Matriz4x4 TRS(Vector3 pos, Quaternion q, Vector3 s)
         {
@@ -260,6 +226,38 @@ namespace CustomMath
 
             return m;
         }
+       
+        public static Matriz4x4 Inverse(Matriz4x4 m)
+        {
+            m.m01 = m.m01 *-1;
+            m.m10 = m.m10 *-1;
+
+            m.m02 = m.m02 *-1;
+            m.m20 = m.m20 *-1;
+
+            m.m12 = m.m12 *-1;
+            m.m21 = m.m21 *-1;
+
+            m.m12 = m.m12 *-1;
+            m.m21 = m.m21 *-1;
+
+            m.m03 = m.m03 *-1;
+            m.m30 = m.m30 *-1;
+
+            m.m13 = m.m13 *-1;
+            m.m31 = m.m31 *-1;
+
+            m.m23 = m.m23 *-1;
+            m.m32 = m.m32 *-1;
+
+            Vector4 column0 = new Vector4(m.m00, m.m01, m.m02, m.m03);
+            Vector4 column1 = new Vector4(m.m10, m.m11, m.m12, m.m13);
+            Vector4 column2 = new Vector4(m.m20, m.m21, m.m22, m.m23);
+            Vector4 column3 = new Vector4(m.m30, m.m31, m.m32, m.m33);
+
+            return new Matriz4x4(column0, column1, column2, column3);
+        }
+       
         public override bool Equals(object other)
         {
             if (!(other is Matriz4x4)) return false;
@@ -269,6 +267,22 @@ namespace CustomMath
         {
             return this == other;
 
+        }
+        public Vector4 GetRow(int index)
+        {
+            switch (index)
+            {
+                case 0:
+                    return new Vector4(m00, m01, m02, m03);
+                case 1:
+                    return new Vector4(m10, m11, m12, m13);
+                case 2:
+                    return new Vector4(m20, m21, m22, m23);
+                case 3:
+                    return new Vector4(m30, m31, m32, m33);
+                default:
+                    throw new IndexOutOfRangeException("Invalid Index");
+            }
         }
         public Vector4 GetColumn(int index)
         {                                  
@@ -286,9 +300,6 @@ namespace CustomMath
                     throw new IndexOutOfRangeException("Invalid Index");
             }
         }
-        //public Vector3 MultiplyPoint(Vector3 point);
-        //public Vector3 MultiplyPoint3x4(Vector3 point);
-        //public Vector3 MultiplyVector(Vector3 vector);
         public void SetColumn(int index, Vector4 column)
         {
             switch (index)
@@ -331,7 +342,7 @@ namespace CustomMath
         }
         public void SetTRS(Vector3 pos, Quaternion q, Vector3 s)
         {
-            TRS(pos, q, s);
+            this = TRS(pos, q, s);
         }
         public override string ToString()
         {

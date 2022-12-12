@@ -7,7 +7,6 @@ public class FrustrumPlane : MonoBehaviour
     [SerializeField] Transform pivot;
     [SerializeField] GameObject sphere;
 
-
     //[SerializeField] public Plane near;
     //[SerializeField] public Plane far;
     //[SerializeField] public Plane left;

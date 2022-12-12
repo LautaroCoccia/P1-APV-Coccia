@@ -4,174 +4,198 @@ using UnityEngine;
 using CustomMath;
 public class FrustrumMyPlane : MonoBehaviour
 {
-    [SerializeField] Transform pivot;
-    [SerializeField] GameObject cube0;
-    [SerializeField] GameObject cube1; 
-    [SerializeField] GameObject cube2;
-    [SerializeField] GameObject cube3;
-    [SerializeField] GameObject cube4;
-    [SerializeField] GameObject cube5;
-    [SerializeField] GameObject cube6;
+    public List<GameObject> cubeTests;
+    [SerializeField] bool rotate = false;
 
-    [SerializeField] public MyPlane near;
-    [SerializeField] public MyPlane far;
-    [SerializeField] public MyPlane left;
-    [SerializeField] public MyPlane right;
-    [SerializeField] public MyPlane top;
-    [SerializeField] public MyPlane down;
+    public Transform pivot;
 
-    GameObject[] cubes;
+    public List<Transform> frusTransf;
+    
     Vec3 pivPos;
-    Vec3 pivRot;
-    Vec3[] points;
 
-    Vec3 punto1 = new Vec3(5, 0, 0.3f);
-    Vec3 punto2 = new Vec3(5, 10, 0.3f);
-    Vec3 punto3 = new Vec3(15, 15, -29.7f);
-    Vec3 punto4 = new Vec3(-5, 0, 0.3f);
-    Vec3 punto5 = new Vec3(-5, 10, 0.3f);
-    Vec3 punto6 = new Vec3(-15, 15, -29.7f);
-    Vec3 punto7 = new Vec3(-15, -5, -29.7f);
-    Vec3 punto8 = new Vec3(15, -5, -29.7f);
 
-    // Start is called before the first frame update
+    MyPlane _planeLeft;
+    MyPlane _planeRight;
+    MyPlane _planeNear;
+    MyPlane _planeFar;
+    MyPlane _planeTop;
+    MyPlane _planeDown;
+
+    Vec3 leftPlaneNormal;
+    Vec3 rightPlaneNormal;
+    Vec3 nearPlaneNormal;
+    Vec3 farPlaneNormal;
+    Vec3 topPlaneNormal;
+    Vec3 downPlaneNormal;
+
+    Vec3 leftPlanePosition;
+    Vec3 rightPlanePosition;
+    Vec3 nearPlanePosition;
+    Vec3 farPlanePosition;
+    Vec3 topPlanePosition;
+    Vec3 downPlanePosition;
+
+    // -----------------------------
+    const float SPEED_ROTATION = 20;
+    Vec3 ROTATION_AXIS = new Vec3(0, 5, 0);
+    Vec3 ROTATE_POINT = Vec3.Zero;
+    // -----------------------------
+
     void Start()
     {
-        cubes = new GameObject[7];
-        cubes[0] = cube0;
-        cubes[1] = cube1;
-        cubes[2] = cube2;
-        cubes[3] = cube3;
-        cubes[4] = cube4;
-        cubes[5] = cube5;
-        cubes[6] = cube6;
+        UpdatePositionObjects();
 
-        points = new Vec3[8];
-        points[0] = punto1;
-        points[1] = punto2;
-        points[2] = punto3;
-        points[3] = punto4;
-        points[4] = punto5;
-        points[5] = punto6;
-        points[6] = punto7;
-        points[7] = punto8;
+        _planeLeft = new MyPlane(leftPlaneNormal, leftPlanePosition);
+        _planeRight = new MyPlane(rightPlaneNormal, rightPlanePosition);
+        _planeNear = new MyPlane(nearPlaneNormal, nearPlanePosition);
+        _planeFar = new MyPlane(farPlaneNormal, farPlanePosition);
+        _planeTop = new MyPlane(topPlaneNormal, topPlanePosition);
+        _planeDown = new MyPlane(downPlaneNormal, downPlanePosition);
 
-        pivPos = new Vec3(pivot.position.x, pivot.position.y, pivot.position.z);
-        pivRot = new Vec3(pivot.rotation.x, pivot.rotation.y, pivot.rotation.z);
-        near = new MyPlane(punto1, punto2, punto4);
-        far = new MyPlane(punto3, punto6, punto8);
-        left = new MyPlane(punto1, punto2, punto8);
-        right = new MyPlane(punto6, punto5, punto4);
-        top = new MyPlane(punto3, punto2, punto6);
-        down = new MyPlane(punto1, punto4, punto7);
-
-        near.Flip();
-        down.Flip();
+        pivPos = new Vec3(pivot.position);
     }
-    private void Update()
+
+    void Update()
     {
-        UpdatePlanesPos();
-
-        Debug.DrawLine(points[0], points[1], Color.blue);
-        Debug.DrawLine(points[1], points[2], Color.blue);
-        Debug.DrawLine(points[2], points[3], Color.blue);
-
-        Debug.DrawLine(points[0], points[3], Color.green);
-        Debug.DrawLine(points[0], points[2], Color.green);
-        Debug.DrawLine(points[4], points[5], Color.blue);
-
-        for (int i = 0; i < cubes.Length; i++)
+        if(rotate)
         {
-            if (near.GetSide(new Vec3(cubes[i].transform.position)) && far.GetSide(new Vec3(cubes[i].transform.position)) &&
-            left.GetSide(new Vec3(cubes[i].transform.position)) && right.GetSide(new Vec3(cubes[i].transform.position)) &&
-            top.GetSide(new Vec3(cubes[i].transform.position)) && down.GetSide(new Vec3(cubes[i].transform.position)))
+            ROTATE_POINT = new Vec3(pivot.position.x, pivot.position.y, pivot.position.z);
+            RotateObjects();
+        }
+        UpdatePositionObjects();
+        MovePlanes();
+
+        for (int i = 0; i < cubeTests.Count; i++)
+        {
+            Vec3 aux = new Vec3(cubeTests[i].transform.position);
+            if (DetectObject(aux))
             {
-                cubes[i].GetComponent<MeshRenderer>().enabled = true;
-                Debug.Log(cubes[i].name +" esta dentro");
+                cubeTests[i].SetActive(true);
             }
             else
             {
-                cubes[i].GetComponent<MeshRenderer>().enabled = false;
-                Debug.Log(cubes[i].name + " esta fuera ");
+                cubeTests[i].SetActive(false);
             }
         }
     }
-    // FALTA REFACTORIZAR MAS!!!!!!!!!!
-    private void UpdatePlanesPos()
+
+    void UpdatePositionObjects()
     {
+        
+
+        leftPlaneNormal = new Vec3(frusTransf[0].right);
+        rightPlaneNormal = new Vec3(frusTransf[1].right);
+        nearPlaneNormal = new Vec3(frusTransf[2].right);
+        farPlaneNormal = new Vec3(frusTransf[3].right);
+        topPlaneNormal = new Vec3(frusTransf[4].right);
+        downPlaneNormal = new Vec3(frusTransf[5].right);
+
+        leftPlanePosition = new Vec3(frusTransf[0].localPosition);
+        rightPlanePosition = new Vec3(frusTransf[1].localPosition);
+        nearPlanePosition = new Vec3(frusTransf[2].localPosition);
+        farPlanePosition = new Vec3(frusTransf[3].localPosition);
+        topPlanePosition = new Vec3(frusTransf[4].localPosition);
+        downPlanePosition = new Vec3(frusTransf[5].localPosition);
+    }
+
+    void MovePlanes()
+    {
+        _planeLeft.SetNormalAndPosition(leftPlaneNormal, leftPlanePosition);
+        _planeRight.SetNormalAndPosition(rightPlaneNormal, rightPlanePosition);
+        _planeNear.SetNormalAndPosition(nearPlaneNormal, nearPlanePosition);
+        _planeFar.SetNormalAndPosition(farPlaneNormal, farPlanePosition);
+        _planeTop.SetNormalAndPosition(topPlaneNormal, topPlanePosition);
+        _planeDown.SetNormalAndPosition(downPlaneNormal, downPlanePosition);
         #region MOVEMENT
-        if (pivPos != pivot.transform.position)
+        if (pivPos != pivot.position)
         {
-            if (pivot.transform.position.x > pivPos.x)
+            if (pivot.position.x > pivPos.x)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].x += (pivot.transform.position.x - pivPos.x);
+                    float aux = frusTransf[i].position.x;
+                    aux += pivot.position.x - pivPos.x;
+                    frusTransf[i].position = new Vector3(aux, frusTransf[i].position.y, frusTransf[i].position.z);
                 }
-                pivPos.x = pivot.transform.position.x;
+                    pivPos = new Vec3(pivot.transform.position.x, pivPos.y, pivPos.z);
             }
-            else if (pivot.transform.position.x < pivPos.x)
+            else if (pivot.position.x < pivPos.x)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].x -= (pivPos.x - pivot.transform.position.x );
+                    float aux = frusTransf[i].position.x;
+                    aux -= pivPos.x - pivot.position.x;
+                    frusTransf[i].position = new Vector3(aux, frusTransf[i].position.y, frusTransf[i].position.z);
+            
                 }
-                pivPos.x = pivot.transform.position.x;
+                pivPos = new Vec3(pivot.transform.position.x, pivPos.y, pivPos.z);
             }
-            if (pivot.transform.position.y > pivPos.y)
+            if (pivot.position.y > pivPos.y)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].y += (pivot.transform.position.y - pivPos.y);
+                    float aux = frusTransf[i].position.y;
+                    aux += pivot.position.y - pivPos.y;
+                    frusTransf[i].position = new Vector3( frusTransf[i].position.x, aux, frusTransf[i].position.z);
                 }
-                pivPos.y = pivot.transform.position.y;
+                pivPos = new Vec3(pivPos.x, pivot.transform.position.y, pivPos.z);
             }
-            else if (pivot.transform.position.y < pivPos.y)
+            else if (pivot.position.y < pivPos.y)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].y -= (pivPos.y - pivot.transform.position.y);
+                    float aux = frusTransf[i].position.y;
+                    aux -= pivPos.y - pivot.position.y;
+                    frusTransf[i].position = new Vector3( frusTransf[i].position.y, aux, frusTransf[i].position.z);
+
                 }
-                pivPos.y = pivot.transform.position.y;
+                pivPos = new Vec3(pivPos.x, pivot.transform.position.y, pivPos.z);
             }
-            if (pivot.transform.position.z > pivPos.z)
+            if (pivot.position.z > pivPos.z)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].z += (pivot.transform.position.z - pivPos.z);
+                    float aux = frusTransf[i].position.z;
+                    aux += pivot.position.z - pivPos.z;
+                    frusTransf[i].position = new Vector3(frusTransf[i].position.x, frusTransf[i].position.y, aux);
                 }
-                pivPos.z = pivot.transform.position.z;
+                pivPos = new Vec3(pivPos.x, pivPos.y, pivot.transform.position.z);
             }
-            else if (pivot.transform.position.z < pivPos.z)
+            else if (pivot.position.z < pivPos.z)
             {
-                for (int i = 0; i < points.Length; i++)
+                for (int i = 0; i < frusTransf.Count; i++)
                 {
-                    points[i].z -= (pivPos.z - pivot.transform.position.z);
+                    float aux = frusTransf[i].position.z;
+                    aux -= pivPos.z - pivot.position.z;
+                    frusTransf[i].position = new Vector3(frusTransf[i].position.x, frusTransf[i].position.y, aux);
+
                 }
-                pivPos.z = pivot.transform.position.z;
+                pivPos = new Vec3(pivPos.x, pivPos.y, pivot.transform.position.z);
             }
-            //if( pivRot.y>pivot.transform.rotation.y)
-            //{
-            //    for (int i = 0; i < points.Length; i++)
-            //    {
-            //        points[i].x += (pivot.transform.position.x - pivPos.x*pivRot.x);
-            //        points[i].z += (pivot.transform.position.z - pivPos.z*pivRot.z);
-            //    }
-            //    pivRot.y = pivot.transform.rotation.y;
-            //}
+            
         }
         #endregion
+    }
+    void RotateObjects()
+    {
+        for (int i = 0; i < frusTransf.Count; i++)
+        {
+            frusTransf[i].RotateAround(ROTATE_POINT, ROTATION_AXIS, SPEED_ROTATION * Time.deltaTime);
+        }
+       
+    }
 
-        near = new MyPlane(points[0], points[1], points[3]);
-        far = new MyPlane(points[2], points[5], points[7]);
-        left = new MyPlane(points[0], points[1], points[7]);
-        right = new MyPlane(points[5], points[4], points[3]);
-        top = new MyPlane(points[2], points[1], points[5]);
-        down = new MyPlane(points[0], points[3], points[6]);
+    bool DetectObject(Vec3 cubePos)
+    {
         
-        near.Flip();
-        down.Flip();
+        if (_planeNear.GetSide(cubePos) && _planeRight.GetSide(cubePos) && _planeLeft.GetSide(cubePos) &&
+         _planeDown.GetSide(cubePos) && _planeTop.GetSide(cubePos) && _planeFar.GetSide(cubePos))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
-
-
